@@ -7,28 +7,23 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILL_ROOT = ROOT / ".claude/skills/chomview"
-AGENT_PATH = ROOT / ".claude/agents/chomview-second-thought.md"
 
 REQUIRED = [
+    "SKILL.md",
     "README.md",
     "LICENSE",
     "NOTICE",
     "THIRD_PARTY_NOTICES.md",
     "CHANGELOG.md",
-    "CONTRIBUTING.md",
-    "SECURITY.md",
-    ".claude/skills/chomview/SKILL.md",
-    ".claude/skills/chomview/references/brotli-protocol.md",
-    ".claude/skills/chomview/references/consequence-chain-completion.md",
-    ".claude/skills/chomview/references/evaluation-protocol.md",
-    ".claude/skills/chomview/references/prior-art-and-claims.md",
-    ".claude/skills/chomview/schemas/brotli-request.schema.json",
-    ".claude/skills/chomview/schemas/brotli-response.schema.json",
-    ".claude/skills/chomview/schemas/acknowledgement.schema.json",
-    ".claude/agents/chomview-second-thought.md",
-    ".github/workflows/validate.yml",
+    "references/brotli-protocol.md",
+    "references/consequence-chain-completion.md",
+    "references/evaluation-protocol.md",
+    "references/prior-art-and-claims.md",
+    "schemas/brotli-request.schema.json",
+    "schemas/brotli-response.schema.json",
+    "schemas/acknowledgement.schema.json",
     "tests/behavioral-cases.md",
+    "agents/chomview-second-thought.md",
 ]
 
 
@@ -59,13 +54,13 @@ def main() -> None:
     if missing:
         fail("missing required files: " + ", ".join(missing))
 
-    skill_path = SKILL_ROOT / "SKILL.md"
+    skill_path = ROOT / "SKILL.md"
     skill_text = skill_path.read_text(encoding="utf-8")
     lines = skill_text.splitlines()
     if len(lines) > 500:
         fail(f"SKILL.md is {len(lines)} lines; expected <= 500")
 
-    fm = parse_frontmatter(skill_text, str(skill_path.relative_to(ROOT)))
+    fm = parse_frontmatter(skill_text, "SKILL.md")
     if fm.get("name") != "chomview":
         fail("SKILL.md frontmatter name must be chomview")
     description = fm.get("description", "")
@@ -74,13 +69,12 @@ def main() -> None:
     if len(description) > 1024:
         fail("SKILL.md description exceeds 1024 characters")
 
-    agent_text = AGENT_PATH.read_text(encoding="utf-8")
-    agent_fm = parse_frontmatter(agent_text, str(AGENT_PATH.relative_to(ROOT)))
+    agent_text = (ROOT / "agents/chomview-second-thought.md").read_text(encoding="utf-8")
+    agent_fm = parse_frontmatter(agent_text, "agents/chomview-second-thought.md")
     if agent_fm.get("name") != "chomview-second-thought":
         fail("Second-Thought agent name is invalid")
 
-    schema_dir = SKILL_ROOT / "schemas"
-    for schema in sorted(schema_dir.glob("*.json")):
+    for schema in sorted((ROOT / "schemas").glob("*.json")):
         with schema.open("r", encoding="utf-8") as fh:
             obj = json.load(fh)
         if not isinstance(obj, dict):
@@ -95,7 +89,7 @@ def main() -> None:
 
     print("ChomView repository validation passed")
     print(f"SKILL.md lines: {len(lines)}")
-    print(f"Schemas: {len(list(schema_dir.glob('*.json')))}")
+    print(f"Schemas: {len(list((ROOT / 'schemas').glob('*.json')))}")
 
 
 if __name__ == "__main__":

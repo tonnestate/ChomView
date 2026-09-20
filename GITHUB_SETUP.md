@@ -21,15 +21,15 @@ claude-code
 llm-agents
 agentic-ai
 agent-reliability
+reasoning
+metareasoning
+second-opinion
 subagents
 multi-agent
 p2p
-reasoning
-llm-reasoning
-metareasoning
-second-opinion
-premature-local-closure
 verification
+prompt-engineering
+premature-local-closure
 ```
 
 Suggested website field:
@@ -62,11 +62,13 @@ Includes:
 - BROTLI/1 local reasoning-state protocol
 - Consequence-Chain Completion
 - non-authoritative ADOPT / ADAPT / DECLINE acknowledgement
-- Claude Code read-only peer agent
+- Claude Code peer-agent source and installers
 - behavioral acceptance cases
 - JSON schemas
 - scientific concept/evaluation references
-- GitHub validation workflow and installers
+- repository validation script
 
 Status: experimental. v0.1.0 defines and operationalizes the hypothesis; it does not yet claim an independently demonstrated performance uplift.
 ```
+
+After applying the repository metadata, this setup note may be removed from the repository.
