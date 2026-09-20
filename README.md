@@ -41,6 +41,8 @@ It adds one bounded peer thought:
 
 > **What has the Primary not thought through in this one local decision?**
 
+Canonical runtime files: [`SKILL.md`](.claude/skills/chomview/SKILL.md) · [`Second-Thought Peer`](.claude/agents/chomview-second-thought.md)
+
 ---
 
 ## The idea
@@ -203,7 +205,7 @@ optional insufficient check
 confidence
 ```
 
-See [`references/brotli-protocol.md`](references/brotli-protocol.md).
+See [`references/brotli-protocol.md`](.claude/skills/chomview/references/brotli-protocol.md).
 
 ---
 
@@ -228,7 +230,7 @@ It stops when either:
 - no further material consequence is reasonably identifiable; or
 - one consequence is important enough to change the local action, confidence, verification, or completion claim.
 
-See [`references/consequence-chain-completion.md`](references/consequence-chain-completion.md).
+See [`references/consequence-chain-completion.md`](.claude/skills/chomview/references/consequence-chain-completion.md).
 
 ---
 
@@ -265,7 +267,7 @@ Testing only that the exception disappeared.
 
 The peer does not take over implementation. The Primary decides what to do next.
 
-More examples: [`references/examples.md`](references/examples.md).
+More examples: [`references/examples.md`](.claude/skills/chomview/references/examples.md).
 
 ---
 
@@ -289,8 +291,7 @@ The peer is read-oriented and should not mutate the parent project by default.
 ## Repository structure
 
 ```text
-chomview/
-├── SKILL.md
+ChomView/
 ├── README.md
 ├── LICENSE
 ├── NOTICE
@@ -299,50 +300,58 @@ chomview/
 ├── CONTRIBUTING.md
 ├── SECURITY.md
 │
-├── references/
-│   ├── activation-cues.md
-│   ├── brotli-protocol.md
-│   ├── chomview-paper.md
-│   ├── consequence-chain-completion.md
-│   ├── evaluation-protocol.md
-│   ├── examples.md
-│   └── prior-art-and-claims.md
+├── .claude/
+│   ├── skills/
+│   │   └── chomview/
+│   │       ├── SKILL.md
+│   │       ├── references/
+│   │       │   ├── activation-cues.md
+│   │       │   ├── brotli-protocol.md
+│   │       │   ├── chomview-paper.md
+│   │       │   ├── consequence-chain-completion.md
+│   │       │   ├── evaluation-protocol.md
+│   │       │   ├── examples.md
+│   │       │   └── prior-art-and-claims.md
+│   │       └── schemas/
+│   │           ├── acknowledgement.schema.json
+│   │           ├── brotli-request.schema.json
+│   │           └── brotli-response.schema.json
+│   └── agents/
+│       └── chomview-second-thought.md
 │
-├── schemas/
-│   ├── acknowledgement.schema.json
-│   ├── brotli-request.schema.json
-│   └── brotli-response.schema.json
+├── .github/
+│   ├── workflows/
+│   │   └── validate.yml
+│   ├── ISSUE_TEMPLATE/
+│   │   ├── bug_report.yml
+│   │   └── research_finding.yml
+│   └── PULL_REQUEST_TEMPLATE.md
 │
 ├── tests/
 │   └── behavioral-cases.md
 │
-├── scripts/
-│   ├── install-claude-code.ps1
-│   ├── install-claude-code.sh
-│   └── validate_repo.py
-│
-├── .claude/
-│   └── agents/
-│       └── chomview-second-thought.md
-│
-└── .github/
-    ├── workflows/
-    │   └── validate.yml
-    ├── ISSUE_TEMPLATE/
-    │   ├── bug_report.yml
-    │   └── research_finding.yml
-    └── PULL_REQUEST_TEMPLATE.md
+└── scripts/
+    ├── install-claude-code.ps1
+    ├── install-claude-code.sh
+    └── validate_repo.py
 ```
+
+The Claude Code runtime files are already stored in their native project locations. There is no duplicate root `SKILL.md`; `.claude/skills/chomview/SKILL.md` is the canonical skill source.
 
 ---
 
 ## Installation
 
-### Agent Skills-compatible runtime
+### Claude Code project
 
-The repository root is an Agent Skill package because `SKILL.md` lives at the root. Install or register the repository directory according to your runtime's Agent Skills mechanism.
+If ChomView is copied into a project with this repository layout, Claude Code can discover the skill and peer from their native project paths:
 
-### Claude Code project installation
+```text
+.claude/skills/chomview/SKILL.md
+.claude/agents/chomview-second-thought.md
+```
+
+### Install into another project
 
 PowerShell:
 
@@ -356,17 +365,7 @@ Bash:
 ./scripts/install-claude-code.sh /path/to/project
 ```
 
-The installer copies:
-
-```text
-SKILL.md + references + schemas
-    -> .claude/skills/chomview/
-
-.claude/agents/chomview-second-thought.md
-    -> .claude/agents/chomview-second-thought.md
-```
-
-It does not modify unrelated project files.
+The installer copies the canonical source directories to the target project's corresponding `.claude/` locations and does not modify unrelated project files.
 
 ---
 
@@ -381,7 +380,7 @@ python scripts/validate_repo.py
 The validator checks:
 
 - required repository files;
-- `SKILL.md` frontmatter;
+- `.claude/skills/chomview/SKILL.md` frontmatter;
 - Skill line count;
 - BROTLI JSON schemas;
 - Second-Thought agent frontmatter;
@@ -422,9 +421,9 @@ The strongest negative result would be that ordinary bounded self-reconsideratio
 
 See:
 
-- [`references/chomview-paper.md`](references/chomview-paper.md)
-- [`references/evaluation-protocol.md`](references/evaluation-protocol.md)
-- [`references/prior-art-and-claims.md`](references/prior-art-and-claims.md)
+- [`references/chomview-paper.md`](.claude/skills/chomview/references/chomview-paper.md)
+- [`references/evaluation-protocol.md`](.claude/skills/chomview/references/evaluation-protocol.md)
+- [`references/prior-art-and-claims.md`](.claude/skills/chomview/references/prior-art-and-claims.md)
 
 ---
 
@@ -444,7 +443,7 @@ Relevant neighboring ideas include:
 - test-suite reduction and cost-aware verification;
 - multi-agent reliability and failure research.
 
-See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) and [`references/prior-art-and-claims.md`](references/prior-art-and-claims.md).
+See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) and [`references/prior-art-and-claims.md`](.claude/skills/chomview/references/prior-art-and-claims.md).
 
 ---
 

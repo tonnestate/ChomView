@@ -8,13 +8,23 @@ if [[ -z "$PROJECT_PATH" ]]; then
 fi
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-SKILL_DIR="$PROJECT_PATH/.claude/skills/chomview"
-AGENT_DIR="$PROJECT_PATH/.claude/agents"
+SRC_SKILL="$ROOT/.claude/skills/chomview"
+SRC_AGENT="$ROOT/.claude/agents/chomview-second-thought.md"
+DST_SKILL="$PROJECT_PATH/.claude/skills/chomview"
+DST_AGENT_DIR="$PROJECT_PATH/.claude/agents"
 
-mkdir -p "$SKILL_DIR/references" "$SKILL_DIR/schemas" "$AGENT_DIR"
-cp "$ROOT/SKILL.md" "$SKILL_DIR/SKILL.md"
-cp "$ROOT/references/"*.md "$SKILL_DIR/references/"
-cp "$ROOT/schemas/"*.json "$SKILL_DIR/schemas/"
-cp "$ROOT/.claude/agents/chomview-second-thought.md" "$AGENT_DIR/chomview-second-thought.md"
+if [[ ! -f "$SRC_SKILL/SKILL.md" ]]; then
+  echo "Missing source skill: $SRC_SKILL/SKILL.md" >&2
+  exit 1
+fi
+if [[ ! -f "$SRC_AGENT" ]]; then
+  echo "Missing source agent: $SRC_AGENT" >&2
+  exit 1
+fi
+
+mkdir -p "$PROJECT_PATH/.claude/skills" "$DST_AGENT_DIR"
+rm -rf "$DST_SKILL"
+cp -a "$SRC_SKILL" "$DST_SKILL"
+cp "$SRC_AGENT" "$DST_AGENT_DIR/chomview-second-thought.md"
 
 echo "Installed ChomView into $PROJECT_PATH"

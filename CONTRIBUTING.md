@@ -23,7 +23,7 @@ Do not turn the Second-Thought Peer into a global planner, supervisor, autonomou
 
 ## Skill changes
 
-Changes to `SKILL.md` should be operational and concise. Put detailed research background, extensive examples, protocol detail, and evaluation material under `references/`.
+Changes to `.claude/skills/chomview/SKILL.md` should be operational and concise. Put detailed research background, extensive examples, protocol detail, and evaluation material under `.claude/skills/chomview/references/`.
 
 Any change to BROTLI fields should update the corresponding schemas and behavioral cases.
 

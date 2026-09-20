@@ -9,7 +9,7 @@ ChomView
 Suggested description:
 
 ```text
-Bounded second-thought peer for AI agents — catches underthought local decisions, projects downstream consequences, and returns one compact non-authoritative intervention before the primary moves on.
+Bounded second-thought peer for AI agents that catches premature local closure by projecting local consequences before the primary moves on.
 ```
 
 Suggested topics:
@@ -19,14 +19,17 @@ ai-agents
 agent-skills
 claude-code
 llm-agents
-multi-agent
-reasoning
-second-opinion
-metareasoning
 agentic-ai
-verification
+agent-reliability
+subagents
+multi-agent
 p2p
-prompt-engineering
+reasoning
+llm-reasoning
+metareasoning
+second-opinion
+premature-local-closure
+verification
 ```
 
 Suggested website field:
