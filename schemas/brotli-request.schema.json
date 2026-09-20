@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chomview.local/schemas/brotli-request.schema.json",
+  "title": "ChomView BROTLI/1 Request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "type", "mid", "tid", "did", "purpose", "situation", "intent", "rationale", "facts", "constraints", "uncertainty", "immediate_effect"],
+  "properties": {
+    "protocol": {"const": "BROTLI/1"},
+    "type": {"const": "request"},
+    "mid": {"type": "string", "minLength": 1, "maxLength": 160},
+    "tid": {"type": "string", "minLength": 1, "maxLength": 160},
+    "did": {"type": "string", "minLength": 1, "maxLength": 160},
+    "purpose": {"type": "string", "minLength": 1, "maxLength": 800},
+    "situation": {"type": "string", "minLength": 1, "maxLength": 1600},
+    "intent": {"type": "string", "minLength": 1, "maxLength": 1200},
+    "rationale": {"type": "string", "minLength": 1, "maxLength": 1600},
+    "facts": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {"type": "string", "minLength": 1, "maxLength": 1000}
+    },
+    "constraints": {
+      "type": "array",
+      "maxItems": 6,
+      "items": {"type": "string", "minLength": 1, "maxLength": 1000}
+    },
+    "uncertainty": {"type": "string", "minLength": 1, "maxLength": 1000},
+    "immediate_effect": {"type": "string", "minLength": 1, "maxLength": 1000},
+    "refs": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {"type": "string", "minLength": 1, "maxLength": 500}
+    }
+  }
+}

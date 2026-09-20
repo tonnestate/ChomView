@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chomview.local/schemas/acknowledgement.schema.json",
+  "title": "ChomView Primary Acknowledgement",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "type", "did", "response", "reason"],
+  "properties": {
+    "protocol": {"const": "BROTLI/1"},
+    "type": {"const": "ack"},
+    "did": {"type": "string", "minLength": 1, "maxLength": 160},
+    "response": {"enum": ["ADOPT", "ADAPT", "DECLINE"]},
+    "reason": {"type": "string", "minLength": 1, "maxLength": 1000}
+  }
+}
