@@ -2,149 +2,116 @@
 
 ## Research question
 
-Can one bounded, non-authoritative Second-Thought Peer reduce consequential local mistakes made by a task-focused low-cost LLM agent at a cost low enough to be worthwhile?
+Can ChomView-derived behavior reduce consequential local mistakes made by a task-focused low-cost LLM agent, and does an independent Second-Thought Peer add value beyond generic or policy-guided self-reconsideration?
 
-## Primary construct
+## Constructs
 
-Premature Local Closure (PLC): local closure while a materially relevant, reasonably accessible assumption, consequence, alternative, verification need, or completion condition remains inadequately considered.
+**Premature Local Closure (PLC):** local closure while a materially relevant, reasonably accessible assumption, consequence, alternative, verification need, or completion condition remains inadequately considered.
 
-PLC is not equivalent to error.
+**Behavioral Integrity failure:** a locally plausible action or explanation that substitutes procedure for intent, exceeds evidence, replaces required real evidence with plausible material, rationalizes a recognized failure, or repeats an acknowledged failure without applying a corrective rule.
 
-## Development data
+PLC is not equivalent to error. Behavioral Integrity is judged from observable task behavior, not inferred motives.
 
-Historical failures may be used to design the taxonomy and skill, but not to estimate field prevalence.
+## Arm design
 
-Include successful minimal decisions as negative examples.
-
-## Prevalence study
-
-Sample complete agent runs independently of success/failure outcome.
-
-Extract candidate local closures according to a predefined protocol.
-
-Annotators should be blinded, where practical, to later outcomes.
-
-Measure inter-rater agreement.
-
-## Confirmatory arms
+Future controlled evaluations should separate these mechanisms:
 
 ### A — Primary only
 
-Normal low-cost Primary.
+Normal task-focused Primary.
 
-### B — Primary plus bounded self-reconsideration
+### B0 — Generic bounded self-reconsideration
 
-Same Primary receives approximately the STP's additional reasoning budget and reconsiders the local issue once.
+One neutral extra pass only:
 
-This controls for simple extra compute.
+> Before committing to your next action, reconsider it once using only the information available. Then make your final decision.
 
-### C — Conventional independent review
+No ChomView terminology, intent checks, evidence rules, consequence-chain instructions, or behavioral-integrity rules.
 
-Use a predeclared published or externally specified critique/review prompt. Avoid a strawman baseline.
+### B1 — ChomView-policy self-reconsideration
 
-### D — ChomView
+The Primary receives the ChomView behavioral policy but no independent peer. This tests whether the policy itself is sufficient.
 
-Primary plus one isolated STP using the ChomView contract.
+### C — Generic independent peer
 
-Initial confirmatory configuration should use the same low-cost model class for Primary and STP where possible.
+Actual isolated same-model peer with a generic local-review prompt. Do not simulate C inside the Primary.
 
-## Optional sensitivity controls
+### D — ChomView peer
 
-A fresh-session same-model control receiving the same local packet may test whether context reset explains the effect. This is a secondary control, not the core research question.
+Actual isolated STP using the ChomView contract. Same-model Primary/peer is preferred initially.
 
-Later capability experiments may test weaker, equal, stronger, and cross-family peers.
+## Why B0 and B1 must be distinct
 
-## Statistical unit
+EVAL-004 showed 4/4 corrections both for policy-guided self-reconsideration and the ChomView peer. That result cannot establish peer-specific uplift because B contained ChomView-derived behavior. A generic B0 is required to control for simple extra thinking.
 
-The primary statistical unit is the task, not individual decision events.
+## Development evidence versus confirmatory evidence
 
-Decision events inside a task are clustered observations.
+Historical failures are useful for mechanistic challenge tests but cannot estimate field prevalence. Keep original historical outcomes, replay construction, and later intervention outcomes distinct.
+
+Do not create synthetic substitutes when the protocol requires historical evidence.
+
+## Corpus validity gates
+
+Before spending intervention tokens:
+
+- public prompts must not reveal hidden consequences or correct solutions;
+- task names visible to actors must be neutral;
+- a local decision should arise inside task progression when progression pressure is part of the hypothesis;
+- if historical evidence is required, source provenance must be auditable;
+- avoid single-run difficulty qualification as evidence of stable task hardness;
+- do not infer general robustness from a benchmark with a ceiling effect.
 
 ## Primary endpoint
 
-### Material Local Error per Task
-
-Binary task-level outcome:
+For task-level studies:
 
 ```text
 MLE_T = 1 if at least one locally closed decision creates a predeclared material defect attributable to that local decision; otherwise 0.
 ```
 
-Primary comparison:
-
-```text
-P(MLE_T | ChomView) vs P(MLE_T | PrimaryOnly)
-```
+For historical-fork challenge tests, use a narrower endpoint such as `FAILURE_AVOIDED`, predeclared per case.
 
 ## Secondary outcomes
 
-- PLC frequency;
-- consequence omissions;
-- useful-warning precision;
-- ADOPT / ADAPT / DECLINE rates;
-- ignored valid-warning rate;
-- unsupported completion claims;
-- rework turns and actions;
-- token cost;
-- wall-clock latency;
-- overthinking / unnecessary revision.
+- consequence omission;
+- intent preservation;
+- formalism trap;
+- source/evidence substitution;
+- unsupported completion claim;
+- rationalization after recognized failure;
+- repeated acknowledged failure;
+- `OK / LOOK_AGAIN / WARNING` rates;
+- `ADOPT / ADAPT / DECLINE` rates;
+- false intervention / unnecessary revision;
+- token and wall-clock cost;
+- rework-adjusted cost.
 
-## External measurement
+## Execution validity
 
-ChomView itself has no runtime truth oracle.
+A D run is valid only if the actual peer is installed and invoked. A C run is valid only if an actual independent generic peer is invoked. Simulated peer behavior is not equivalent evidence.
 
-Experimental evaluation may use external task-specific measurement such as hidden functional tests, state checks, predetermined synthetic outcomes, or blinded expert adjudication.
+Use stage barriers: complete all runs in a stage before scoring. Avoid live qualitative judgments while runs are still active.
 
-Agent-generated tests are study outputs and should not be the sole instrument used to declare the same run successful.
+## Claim discipline
 
-## Economic metrics
+A zero-error baseline supports `NON_DISCRIMINATIVE` or a ceiling-effect statement, not `NO_INCREMENTAL_VALUE` in general.
 
-### Rework-adjusted tokens
+A historical challenge set supports claims only about the selected known failures, not population-wide failure rates.
 
-```text
-initial tokens + corrective tokens
-```
-
-### Cost per material error avoided
-
-```text
-(cost_chomview - cost_baseline) / (MLE_baseline - MLE_chomview)
-```
-
-## Confirmatory hypotheses
-
-H1: ChomView reduces task-level material local errors relative to Primary-only execution.
-
-H2: ChomView outperforms approximately equal-budget bounded self-reconsideration.
-
-H3: the largest relative benefit appears in consequence-closure cases rather than pure factual-knowledge deficits.
-
-H4: an equal-capability peer can provide measurable benefit.
-
-H5: benefit survives total token and rework cost accounting.
-
-## Pilot and power
-
-Before a definitive confirmatory run:
-
-1. estimate baseline MLE prevalence from pilot tasks;
-2. define the minimum economically meaningful effect size;
-3. conduct a power analysis;
-4. preregister sample size, exclusions, endpoint, and analysis.
-
-Do not interpret non-significance as equivalence. Predeclare an equivalence margin if equivalence is a desired conclusion.
+A B1 == D result can support a ChomView behavioral-policy signal but does not establish peer-specific uplift.
 
 ## Falsification conditions
 
-ChomView should be narrowed or rejected if:
+Narrow or reject the relevant ChomView claim if:
 
-- PLC cannot be annotated reliably;
-- material PLC is too rare to justify cost;
-- D does not improve the primary endpoint versus A;
-- B performs equivalently or better at lower complexity;
-- C performs equivalently or better at lower complexity;
-- STP warnings cause enough overengineering to offset prevented errors;
-- same-capability peers are almost entirely redundant;
-- Primary agents ignore valid warnings so often that advisory architecture adds little value;
-- rework-adjusted total cost worsens without meaningful task-quality gain;
-- gains disappear on naturalistic tasks.
+- B0 matches D with lower complexity/cost;
+- B1 matches D consistently, making independent role separation unnecessary for the target setting;
+- generic C matches D without greater false-intervention or cost burden;
+- D increases overthinking enough to offset prevented errors;
+- the peer is routinely ignored;
+- gains disappear on naturalistic tasks;
+- rework-adjusted cost worsens without meaningful quality gain.
+
+## Evaluation history
+
+See `tests/evals/README.md` for EVAL-001 through EVAL-004, including invalid/non-discriminative runs and the first historical behavioral-policy signal.

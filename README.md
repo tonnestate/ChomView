@@ -8,7 +8,7 @@
 <p align="center">
   <img alt="License" src="https://img.shields.io/badge/license-Apache--2.0-blue">
   <img alt="Status" src="https://img.shields.io/badge/status-experimental-orange">
-  <img alt="Version" src="https://img.shields.io/badge/version-0.1.0-green">
+  <img alt="Version" src="https://img.shields.io/badge/version-0.2.0-green">
   <img alt="Agent Skill" src="https://img.shields.io/badge/agent-skill-purple">
   <img alt="Protocol" src="https://img.shields.io/badge/protocol-BROTLI%2F1-6f42c1">
 </p>
@@ -170,6 +170,27 @@ ChomView targets five local failure classes:
 
 ---
 
+
+## Behavioral Integrity
+
+ChomView v0.2 extends PLC handling with **Behavioral Integrity** checks derived from observed agent failures:
+
+- substantive objective vs procedural completion;
+- evidence strength vs claim strength;
+- real/source-backed requirements vs plausible substitutes;
+- explanation vs exoneration;
+- acknowledgement vs actual correction;
+- repeated materially similar failures after acknowledgement.
+
+The key operational rule is:
+
+```text
+acknowledgement without a changed future decision rule is not correction
+```
+
+See [`references/behavioral-integrity.md`](references/behavioral-integrity.md).
+
+---
 ## BROTLI/1
 
 ChomView communicates with a compact semantic packet called **BROTLI/1**.
@@ -303,6 +324,7 @@ chomview/
 │
 ├── references/
 │   ├── activation-cues.md
+│   ├── behavioral-integrity.md
 │   ├── brotli-protocol.md
 │   ├── chomview-paper.md
 │   ├── consequence-chain-completion.md
@@ -319,7 +341,10 @@ chomview/
 │   └── chomview-second-thought.md
 │
 ├── tests/
-│   └── behavioral-cases.md
+│   ├── behavioral-cases.md
+│   └── evals/
+│       ├── README.md
+│       └── EVAL-001 ... EVAL-004/
 │
 └── scripts/
     ├── install-claude-code.ps1
@@ -425,7 +450,7 @@ See [`tests/behavioral-cases.md`](tests/behavioral-cases.md).
 
 ChomView is **experimental**.
 
-The repository contains a scientific concept paper and evaluation protocol, but v0.1.0 does not claim that ChomView has already demonstrated an independent performance uplift.
+The repository contains a scientific concept paper and evaluation protocol, but v0.2.0 still does not claim an independent peer-performance uplift. Historical-fork EVAL-004 produced a behavioral-policy signal: ChomView-derived checks corrected 4/4 selected historical failures both as policy-guided self-reconsideration and as a peer intervention; peer-specific uplift remains unestablished.
 
 The core falsifiable question is:
 
@@ -463,7 +488,7 @@ See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) and [`references/prior-ar
 
 ## Roadmap
 
-### v0.1.x — Behavioral contract
+### v0.2 — Behavioral contract
 
 - [x] PLC taxonomy
 - [x] Second-Thought Peer role
@@ -474,10 +499,13 @@ See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) and [`references/prior-ar
 - [x] read-only Claude Code peer agent
 - [x] behavioral cases
 - [x] repository validation
+- [x] Behavioral Integrity: intent, evidence, substitution, rationalization, corrective acknowledgement
+- [x] evaluation history with invalid/non-discriminative results preserved
 
 ### Next
 
-- [ ] run historical local-failure replays
+- [x] run initial historical local-failure replays (EVAL-004)
+- [ ] add B0 generic-reconsideration control against B1 policy and D peer
 - [ ] add benign minimal-decision control cases
 - [ ] measure Primary-only vs bounded self-reconsideration vs ChomView
 - [ ] measure ignored-warning behavior

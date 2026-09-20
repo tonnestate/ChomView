@@ -196,3 +196,34 @@ debate_rounds = 0
 ## Security and privacy note
 
 BROTLI should transfer only the minimum local task information needed by the peer. Do not use it as a mechanism to expose hidden chain-of-thought or unrelated confidential context.
+
+
+## v0.2 Behavioral Integrity fields
+
+BROTLI/1 remains backward-compatible. ChomView v0.2 adds optional semantic fields for repeated or intent-integrity failures.
+
+Request:
+
+```text
+prior_pattern:
+  optional previously acknowledged materially similar failure pattern
+```
+
+Response:
+
+```text
+intent_at_risk:
+  substantive objective endangered by the proposed local action, or none
+
+pattern_rule:
+  optional reusable decision rule when a recognized/repeated failure exists
+```
+
+Acknowledgement may additionally record:
+
+```text
+pattern: concise reusable failure pattern
+changed_rule: decision rule the Primary will apply to materially similar cases
+```
+
+These fields transfer only decision-relevant summaries. They must not contain private chain-of-thought.

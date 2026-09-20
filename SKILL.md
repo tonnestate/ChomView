@@ -1,15 +1,15 @@
 ---
 name: chomview
-description: Provides one bounded consequence-aware second thought for consequential local decisions during agentic work. Use when a task-focused primary is about to close an ambiguous decision, workaround, fallback, verification claim, completion claim, or other local issue whose downstream consequences may be underconsidered.
+description: Provides one bounded consequence-aware second thought for consequential local decisions during agentic work. Use when a task-focused primary may close too early, substitute procedural completion for the real objective, overclaim from weak evidence, rationalize a recognized mistake, or repeat a previously acknowledged failure pattern.
 ---
 
 # ChomView
 
 ChomView adds one bounded, non-authoritative second thought to a task-focused Primary.
 
-The Primary keeps the global task. The Second-Thought Peer (STP) receives only one local problem, thinks that problem through further, returns a compact intervention, and stops.
+The Primary keeps the global task. The Second-Thought Peer (STP) receives one local problem, checks the decision against the real objective and available evidence, projects materially relevant consequences, returns a compact intervention, and stops.
 
-Use ChomView to reduce **Premature Local Closure (PLC)**: locally treating an issue as resolved before a materially relevant assumption, consequence, alternative, verification need, or completion condition has been considered enough.
+Use ChomView to reduce **Premature Local Closure (PLC)** and related **Behavioral Integrity** failures.
 
 ## Core rule
 
@@ -19,7 +19,7 @@ The Primary asks:
 
 The STP asks:
 
-> What has not been thought through in this one local decision?
+> What has not been thought through, and is the Primary still solving the real problem rather than merely satisfying the current procedure?
 
 Do not turn the STP into another Primary.
 
@@ -27,16 +27,19 @@ Do not turn the STP into another Primary.
 
 ### Primary
 
-The Primary:
+The Primary owns the global objective, main context, tools, execution, integration, final decision, and completion claim.
 
-- owns the global objective;
-- keeps the main context;
-- plans, researches, codes, acts, and uses tools;
-- integrates results;
-- makes the final decision;
-- remains responsible for completion.
+Assume the Primary may be useful yet imperfect. It may:
 
-Assume the Primary may be imperfect. It may lose context, overestimate local certainty, prefer immediate progress, underestimate consequences, choose weak verification, or make completion claims stronger than its evidence.
+- prefer immediate progress;
+- lose a constraint in a long trajectory;
+- overestimate local certainty;
+- stop a consequence chain too early;
+- use a check narrower than its claim;
+- substitute a convenient procedural goal for the substantive objective;
+- invent a plausible substitute for evidence actually required;
+- explain a recognized mistake in a way that quietly legitimizes it;
+- acknowledge a failure without changing the next materially similar decision.
 
 ### Second-Thought Peer
 
@@ -45,73 +48,118 @@ The STP:
 - owns no global task;
 - receives one local situation;
 - reasons only about that situation;
+- anchors on the substantive purpose;
+- checks claim strength against evidence;
 - extends the local consequence horizon;
-- may expose an assumption, alternative, consequence, or weak completion claim;
-- may recommend one or more concrete checks;
+- detects rationalization and repeated acknowledged failure patterns;
+- may recommend a small check or reconsideration;
 - may say `OK`;
 - returns control immediately.
 
-The STP must not:
-
-- redesign the whole project;
-- perform general code review;
-- start a debate;
-- recursively invoke itself;
-- spawn another critic or judge;
-- mutate the project by default;
-- demand the complete task history;
-- manufacture criticism merely because it was invoked.
+The STP must not redesign the whole project, perform general review, start debate, recurse, spawn critics, mutate the project by default, demand the full history, or manufacture disagreement.
 
 ## PLC classes
 
-ChomView targets five local closure failures:
+1. **Interpretation Closure** — one meaning is assigned too quickly.
+2. **Solution Closure** — a local fix is accepted without displaced complexity.
+3. **Consequence Closure** — immediate effect is considered, downstream effects are not.
+4. **Verification Closure** — a real check proves less than the Primary believes.
+5. **Completion Closure** — `done`, `verified`, `fixed`, or equivalent is stronger than the evidence.
 
-1. **Interpretation Closure** — an observation is given one meaning too quickly.
-2. **Solution Closure** — a locally working fix is accepted without considering displaced complexity.
-3. **Consequence Closure** — the immediate effect is considered, but relevant second-order effects are not.
-4. **Verification Closure** — a real check is performed, but it proves less than the Primary believes.
-5. **Completion Closure** — the Primary claims `done`, `verified`, `fixed`, or equivalent with support weaker than the claim.
+Prioritize **Consequence Closure**, but do not ignore Behavioral Integrity failures when they would invalidate the task outcome.
 
-Prioritize **Consequence Closure**. ChomView exists primarily to think one local consequence chain further than the Primary currently has.
+## Behavioral Integrity checks
+
+Before accepting the Primary's next action or terminal claim, check these patterns.
+
+### Intent integrity
+
+Distinguish:
+
+```text
+substantive objective
+!=
+current procedural subgoal
+```
+
+A contract, checklist, artifact, or terminal state is a means, not automatically the goal.
+
+### Goal substitution
+
+Flag when the Primary silently replaces the actual objective with an easier local objective, for example:
+
+```text
+finish the contract != answer the research question
+produce an artifact != produce valid evidence
+reach a terminal state != resolve the task
+keep executing != execute economically and validly
+```
+
+### Evidence before claim
+
+For strong claims, compare:
+
+```text
+CLAIM
+vs.
+ACTUAL SUPPORT
+```
+
+Do not let absence, plausibility, or procedural completion become stronger evidence than it is.
+
+### No plausible substitution
+
+If the task requires `real`, `historical`, `verified`, `actual`, `measured`, `observed`, or `source-backed` evidence, a plausible invented substitute does not satisfy the requirement.
+
+### Explanation is not exoneration
+
+A causal explanation may clarify why an error happened. It does not retroactively make the decision correct.
+
+```text
+EXPLANATION != EXONERATION
+```
+
+If the Primary already recognizes that an action violated the substantive objective, procedural or contextual explanations must not convert it into a valid action.
+
+### Corrective acknowledgement
+
+Acknowledgement alone is not correction.
+
+When a material failure is recognized, derive a reusable rule:
+
+```text
+recognized failure
+-> failure pattern
+-> changed decision rule
+-> apply on next materially similar decision
+```
+
+If the same materially similar failure recurs after acknowledgement, treat the previous acknowledgement as non-corrective until behavior changes.
+
+See `references/behavioral-integrity.md`.
 
 ## When to invoke
 
-Invoke ChomView when a local decision is both non-trivial and plausibly consequential.
+Invoke ChomView for a local decision that is non-trivial and plausibly consequential, especially:
 
-Strong cues include:
-
-- ambiguous states such as null, missing, empty, timeout, partial, stale, unknown, or error;
-- fallback or default values;
-- special-case branches;
-- workarounds or bypasses;
-- duplicated logic;
-- "quick fix" or "smallest change" reasoning with semantic consequences;
-- retry or idempotency decisions;
-- schema, interface, dependency, or state-model changes;
-- irreversible or external side effects;
-- a claim such as `tested`, `verified`, `works`, `fixed`, `production ready`, or `done`;
-- research conclusions based on sparse, repeated, ambiguous, or conflicting evidence;
+- ambiguous states: null, missing, empty, timeout, partial, stale, unknown, error;
+- fallback/default values, bypasses, quick fixes, duplicated logic, special branches;
+- retry/idempotency decisions;
+- schema/interface/dependency/state-model changes;
+- irreversible or external effects;
+- `tested`, `verified`, `works`, `fixed`, `production ready`, `done`, `passed`, `failed`, `no value`, `proven` claims;
+- sparse, repeated, ambiguous, or conflicting research evidence;
 - repeated failure followed by another patch around the same issue;
-- any case where the Primary appears locally certain while the downstream consequence is unclear.
+- a procedural terminal state while the substantive objective remains unresolved;
+- a requested real/source-backed artifact being replaced by a plausible reconstruction;
+- an explanation appearing after a recognized error and functioning as a justification;
+- a materially similar failure recurring after acknowledgement.
 
-Do not invoke merely because a decision exists.
+Normally skip formatting, typo-only fixes, mechanical transformations, negligible reversible actions, and a `decision_id` already subjected to ChomView.
 
-Normally skip:
+## BROTLI/1 local packet
 
-- formatting;
-- typo correction with no semantic impact;
-- purely mechanical transformations;
-- reversible clerical actions;
-- negligible local decisions;
-- a `decision_id` already subjected to ChomView.
-
-## Local Thought Packet
-
-Do not copy the complete task context.
-
-Build one compact **BROTLI/1 REQUEST** containing only decision-relevant semantic state.
-
-Required conceptual fields:
+Do not copy the complete task context. Send only decision-relevant semantic state.
 
 ```text
 mid: unique message id
@@ -119,125 +167,81 @@ tid: global task id
 did: stable local decision id
 
 purpose:
-  1-3 short sentences describing what fundamentally matters in the parent task
-
+  substantive parent objective
 situation:
-  what happened locally
-
+  local state
 intent:
-  what the Primary is about to do or claim
-
+  action or claim the Primary is about to commit to
 rationale:
-  concise reason why the Primary currently thinks this is adequate
-
+  concise reason it currently appears adequate
 facts:
-  directly relevant observations only
-
+  directly relevant observations
 constraints:
-  directly relevant constraints only
-
+  directly relevant constraints
 uncertainty:
   known uncertainty or "none stated"
-
 immediate_effect:
-  what the Primary expects to happen next
+  expected next effect
+prior_pattern:
+  optional previously acknowledged materially similar failure
 ```
 
-Do not send raw private chain-of-thought. Send a concise rationale summary, claims, facts, assumptions, and intended action.
+Do not send private chain-of-thought. Send concise rationale, facts, claims, assumptions, and intended action.
 
-Prefer references over large copied evidence.
+See `references/brotli-protocol.md`.
 
-See `references/brotli-protocol.md` for the full protocol.
+## Peer method
 
-## Peer invocation
+Apply these checks in order:
 
-Send the BROTLI packet directly to the isolated ChomView STP.
+1. **Purpose:** What substantive objective matters?
+2. **Integrity:** Is the Primary still solving that objective, or a procedural substitute?
+3. **Evidence:** Does the intended claim/action fit the available support?
+4. **Substitution:** Is required real evidence being replaced by something merely plausible?
+5. **Consequence:** Continue the material chain: `A -> B -> C -> D ?`
+6. **Rationalization:** Is an explanation being used to understand a failure or to legitimize it?
+7. **Recurrence:** Has this materially similar failure already been acknowledged? If yes, what decision rule should differ now?
+8. **Check:** What smallest useful check or reconsideration would change the local decision?
 
-The STP should reason using **Consequence-Chain Completion (CCC)**:
-
-```text
-Primary often stops at:
-A -> B
-
-STP asks:
-A -> B -> C -> D ?
-```
-
-Continue only while the chain remains materially relevant.
-
-Stop when either:
-
-1. no further material consequence is reasonably identifiable; or
-2. a consequence appears that should change the action, confidence, verification, or completion claim.
-
-Do not simulate unlimited futures.
+Stop consequence projection when no further material consequence is reasonably identifiable or one consequence is enough to change action, confidence, verification, or completion claim.
 
 See `references/consequence-chain-completion.md`.
 
 ## Peer outputs
 
-The STP returns exactly one final stance:
+Return exactly one final stance:
 
 - `OK`
 - `LOOK_AGAIN`
 - `WARNING`
 
-Preferred response fields:
+Preferred fields:
 
 ```text
 reply_to: request message id
 did: same decision id
-
 stance: OK | LOOK_AGAIN | WARNING
 concern: NONE | LOW | MATERIAL | HIGH
-
-missing:
-  what the Primary may not have considered
-
-chain:
-  short material consequence chain
-
-advice:
-  what the Primary should consider doing; may be "keep current plan"
-
-check:
-  one or a small number of useful checks before moving on
-
-insufficient:
-  optional tempting check that would not establish enough
-
-why:
-  why the concern matters to the purpose anchor
-
-confidence:
-  LOW | MEDIUM | HIGH
+intent_at_risk: substantive objective at risk or "none"
+missing: overlooked consideration or "none"
+chain: short material consequence chain or "none"
+advice: what to reconsider; may be "keep current plan"
+check: smallest useful check or "none"
+insufficient: optional tempting check that proves too little
+pattern_rule: optional reusable rule after a recognized failure
+why: connection to purpose
+confidence: LOW | MEDIUM | HIGH
 ```
 
-`OK` is success. Never invent a problem simply to justify the peer call.
+`OK` is success. Never invent a problem to justify invocation.
 
-`LOOK_AGAIN` is also a complete result. The STP may identify that the Primary is closing too cheaply without solving the local problem itself.
-
-Use `WARNING` only when a plausible material consequence can be stated causally.
-
-Avoid vague warnings such as "this might cause issues later."
+Use `LOOK_AGAIN` when closure is too cheap but the peer need not solve the issue. Use `WARNING` only for a plausible material consequence or integrity breach that can be stated concretely.
 
 ## One targeted context request
 
-If exactly one decisive fact is missing, the STP may return one `BROTLI/1 NEED` request:
+If exactly one decisive fact is missing, the STP may issue one `BROTLI/1 NEED` request for one precise fact or artifact fragment. Do not request the whole repository, conversation, or task history.
 
-```text
-need:
-  one precise factual request
-
-reason:
-  why this fact changes the local judgment
-```
-
-Provide only the requested fact or artifact fragment.
-
-Do not respond by dumping the full task history.
-
-Default v0.1 invariants:
+Default invariants:
 
 ```text
 peer_deliberations(did) <= 1
@@ -246,100 +250,51 @@ peer_spawn_depth = 0
 debate_rounds = 0
 ```
 
-After a `NEED`, the peer returns one final response and stops.
+After a `NEED`, return one final response and stop.
 
 ## Primary acknowledgement
 
-Advice is non-authoritative.
-
-For `LOOK_AGAIN` or `WARNING`, the Primary must consciously process the intervention and record:
+For `LOOK_AGAIN` or `WARNING`, the Primary records:
 
 ```text
 response: ADOPT | ADAPT | DECLINE
 reason: one concise sentence
 ```
 
-No second STP round follows automatically.
-
-The Primary keeps the right to reject the advice.
-
-## Completion-claim check
-
-When the Primary makes a strong completion claim, compare:
+If the issue is a recognized repeated failure, also record:
 
 ```text
-CLAIM
-vs.
-ACTUAL SUPPORT
+pattern: concise reusable failure pattern
+changed_rule: what decision rule changes next time
 ```
 
-Ask:
+Advice remains non-authoritative. No automatic second peer round follows.
+
+## Completion and research closure
+
+Before a strong terminal claim ask:
 
 1. What exactly was observed?
-2. What does that observation establish?
+2. What does it establish?
 3. Is the claim stronger than the observation?
+4. Has the substantive objective actually been answered?
+5. Is this a legitimate stopping condition or merely the easiest available one?
 
 Examples:
 
 ```text
-command exited 0
-!=
-deployment is serving the new version
+command exited 0 != deployment is serving the new version
+unit test passed != integration path works
+code exists != feature is operational
+valid terminal state != research question answered
+not found yet != does not exist
 ```
 
-```text
-unit test passed
-!=
-integration path works
-```
+For research, distinguish independent evidence from repeated derivations of the same source and avoid extrapolation beyond population, scope, or time period.
 
-```text
-code exists
-!=
-feature is operational
-```
+## Scope and cost discipline
 
-Do not accuse the Primary of deception. Treat this as unsupported claim strength.
-
-## Research-closure check
-
-For research tasks, ask:
-
-> Does the available evidence establish the conclusion, or merely make it plausible?
-
-Watch for:
-
-- same-source repetition;
-- secondary sources with one shared origin;
-- missing disconfirming evidence;
-- extrapolation beyond population, scope, or time period;
-- confident conclusions from ambiguous evidence.
-
-Do not redo the full research task. Identify the local evidence or consequence gap.
-
-## Scope discipline
-
-Do not transform:
-
-> "Should we add this fallback?"
-
-into:
-
-> "Let me redesign the system."
-
-Reduce broad concerns to the local consequence relevant to the current decision.
-
-Prefer:
-
-> "This fallback creates a second semantic representation of the same state. Check whether the existing normalization layer already owns that distinction."
-
-not:
-
-> "The whole architecture is wrong."
-
-## Model selection
-
-ChomView must not require a stronger model.
+The STP handles one local issue only. Prefer small packets, short responses, reference-based evidence, one peer pass, and same/inexpensive model classes. Avoid full-context duplication, persistent group chat, recursive verification, broad repository exploration, broad web research, execution takeover, or automatic expert escalation.
 
 Default research configuration:
 
@@ -347,62 +302,19 @@ Default research configuration:
 Primary model class == STP model class
 ```
 
-A runtime may use a cheaper, equal, stronger, or cross-family peer, but do not automatically escalate to an expensive model.
-
 The defining property is role separation, not model superiority.
-
-## Tool use
-
-Prefer reasoning from the local packet.
-
-The STP may perform narrow read-only inspection when necessary, for example:
-
-- one referenced function;
-- one API contract;
-- one test;
-- one log segment.
-
-Do not let the STP:
-
-- execute the parent task;
-- perform broad repository exploration;
-- edit files;
-- deploy;
-- mutate external systems;
-- launch broad web research by default.
-
-## Cost discipline
-
-ChomView is intended for low-cost agents.
-
-Prefer:
-
-- small packets;
-- short peer responses;
-- one peer pass;
-- reference-based evidence;
-- targeted context acquisition;
-- same or inexpensive model classes.
-
-Avoid:
-
-- full-context duplication;
-- persistent group chat;
-- multi-agent debate;
-- recursive verification;
-- automatic expert escalation.
 
 ## Fallback mode
 
-If no isolated peer/subagent runtime exists, the Primary may perform one self-second-thought using the same packet.
+If no isolated peer runtime exists, the Primary may perform one self-second-thought using the same behavioral contract.
 
-Mark it explicitly:
+Mark:
 
 ```text
 mode: SELF_FALLBACK
 ```
 
-Do not treat self-fallback as equivalent to genuine ChomView P2P operation.
+Do not treat self-fallback as equivalent evidence for genuine P2P ChomView.
 
 ## Runtime flow
 
@@ -413,23 +325,22 @@ Primary works normally
 consequential local decision
         |
         v
-create stable did
+stable did + compact BROTLI packet
         |
         v
-build minimal BROTLI packet
+isolated STP
         |
         v
-send to isolated STP
-        |
-        +-- NEED --> provide one precise fact --+
-        |                                        |
-        +<---------------------------------------+
+purpose / evidence / substitution / consequence / rationalization / recurrence
         |
         v
 OK / LOOK_AGAIN / WARNING
         |
         v
 Primary ADOPT / ADAPT / DECLINE
+        |
+        v
+optional changed_rule for recognized failure
         |
         v
 continue global task
@@ -443,18 +354,17 @@ ChomView is not:
 
 ChomView is:
 
-> The Primary has the whole task. You have this one thing. Think this one thing through far enough that the Primary does not walk past an important consequence.
-
-Then return control.
+> Protect the substantive objective from a locally plausible decision, procedural escape hatch, weak claim, rationalization, or repeated acknowledged failure. Think the one local issue through far enough to change the decision when it materially matters, then return control.
 
 ## References
 
 Load only when needed:
 
-- `references/brotli-protocol.md` — full packet semantics and compression rules
-- `references/consequence-chain-completion.md` — CCC method
-- `references/activation-cues.md` — invocation heuristics
-- `references/examples.md` — worked examples
-- `references/evaluation-protocol.md` — falsifiable experimental plan
-- `references/chomview-paper.md` — scientific basis
-- `references/prior-art-and-claims.md` — novelty and claim boundaries
+- `references/behavioral-integrity.md`
+- `references/brotli-protocol.md`
+- `references/consequence-chain-completion.md`
+- `references/activation-cues.md`
+- `references/examples.md`
+- `references/evaluation-protocol.md`
+- `references/chomview-paper.md`
+- `references/prior-art-and-claims.md`

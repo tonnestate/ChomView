@@ -15,6 +15,7 @@ REQUIRED = [
     "NOTICE",
     "THIRD_PARTY_NOTICES.md",
     "CHANGELOG.md",
+    "references/behavioral-integrity.md",
     "references/brotli-protocol.md",
     "references/consequence-chain-completion.md",
     "references/evaluation-protocol.md",
@@ -23,6 +24,7 @@ REQUIRED = [
     "schemas/brotli-response.schema.json",
     "schemas/acknowledgement.schema.json",
     "tests/behavioral-cases.md",
+    "tests/evals/README.md",
     "agents/chomview-second-thought.md",
 ]
 

@@ -1,0 +1,14 @@
+{
+  "name": "ChomView",
+  "version": "0.2.0",
+  "base_live_commit": "663bdd4521c8ce60457e4798ec980efa7533ebc4",
+  "generated_date": "2026-09-20",
+  "major_changes": [
+    "Behavioral Integrity",
+    "rationalization detection",
+    "corrective acknowledgement",
+    "evaluation history EVAL-001..004",
+    "B0/B1/C/D evaluation separation"
+  ],
+  "empirical_boundary": "EVAL-004 shows a 4/4 behavioral-policy correction signal on selected historical failures for B1 and D; peer-specific uplift not established."
+}
