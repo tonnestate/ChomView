@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 import importlib.util
+import sys
 import tempfile
 import unittest
 from pathlib import Path
+
+sys.dont_write_bytecode = True
 
 ROOT=Path(__file__).resolve().parents[2]
 spec=importlib.util.spec_from_file_location("chomview_guard", ROOT/"runtime/chomview_guard.py")
@@ -35,7 +38,7 @@ class GuardTests(unittest.TestCase):
     def call(self, command):
         store=guard.load_store(self.root)
         payload={"hook_event_name":"PreToolUse","tool_name":"Bash","tool_input":{"command":command},"cwd":str(self.root)}
-        return guard.pretool_decision(self.root,store,payload)
+        return guard.pretool_decision(self.root,store,payload,guard.default_contract())
 
     def test_core_rule_is_present(self):
         ctx=guard.format_context(guard.load_store(self.root))
@@ -60,8 +63,8 @@ class GuardTests(unittest.TestCase):
         store=guard.load_store(self.root)
         write={"hook_event_name":"PreToolUse","tool_name":"Write","tool_input":{"file_path":"x","content":"y"},"cwd":str(self.root)}
         read={"hook_event_name":"PreToolUse","tool_name":"Read","tool_input":{"file_path":"x"},"cwd":str(self.root)}
-        self.assertEqual("deny",guard.pretool_decision(self.root,store,write)["hookSpecificOutput"]["permissionDecision"])
-        self.assertIsNone(guard.pretool_decision(self.root,store,read))
+        self.assertEqual("deny",guard.pretool_decision(self.root,store,write,guard.default_contract())["hookSpecificOutput"]["permissionDecision"])
+        self.assertIsNone(guard.pretool_decision(self.root,store,read,guard.default_contract()))
 
     def test_resolve_resets_but_keeps_rule(self):
         for _ in range(3): self.call("git commit --no-verify")

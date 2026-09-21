@@ -51,7 +51,9 @@ The candidate contribution is the specific composition:
 12. value is judged against additional compute, review baselines, rework, and token cost;
 13. material self-corrections can be persisted as reusable behavioral rules outside conversational memory;
 14. repeated acknowledged failures can enter a bounded deterministic escalation state when explicit matchers exist;
-15. new evidence is separated from authorization to mutate the root objective.
+15. new evidence is separated from authorization to mutate the root objective;
+16. heterogeneous agents may retain different priors while execution authority is bound by an explicit local contract;
+17. stakeholder/resource metadata separates preference from spending or mutation authority.
 
 This should be described as a **candidate integration-level research gap**, not proven foundational novelty.
 
@@ -68,3 +70,11 @@ The strongest practical result would be evidence that two similarly limited low-
 Claude Code lifecycle hooks, persistent state files, permission gating, and escalation state machines are established engineering mechanisms and are not claimed as novel. ChomView's research question concerns the composition and incremental value of the bounded pattern, not ownership of those primitives.
 
 The v0.3 Behavioral Continuity Guard is an implementation hypothesis. Its presence in the package must not be cited as performance validation.
+
+## v0.4 implementation boundary
+
+Access control, policy enforcement, capability security, permission gates, resource ownership, and policy-as-code are established engineering ideas. ChomView does not claim invention of those mechanisms.
+
+The v0.4 hypothesis is narrower: a bounded second-thought / continuity system may become more robust in heterogeneous-agent environments when it distinguishes cognition from authority and composes explicit stakeholder/resource contracts with prior behavioral corrections.
+
+Do not claim that ChomView defines cultural normality, solves general value alignment, or proves that a foreign agent is safe merely because it passes the local behavioral contract.

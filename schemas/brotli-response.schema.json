@@ -89,6 +89,37 @@
     "pattern_rule": {
       "type": "string",
       "maxLength": 1200
+    },
+    "authority_decision": {
+      "enum": [
+        "ALLOW",
+        "LOOK_AGAIN",
+        "REQUIRE_CONSENT",
+        "BLOCK",
+        "UNKNOWN"
+      ]
+    },
+    "stakeholders": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      }
+    },
+    "affected_resources": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      }
+    },
+    "contract_rule": {
+      "type": "string",
+      "maxLength": 200
     }
   }
 }

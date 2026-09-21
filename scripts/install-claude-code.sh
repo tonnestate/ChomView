@@ -18,6 +18,9 @@ cp "$ROOT/references/"*.md "$SKILL_DIR/references/"
 cp "$ROOT/schemas/"*.json "$SKILL_DIR/schemas/"
 cp "$ROOT/agents/chomview-second-thought.md" "$AGENT_DIR/chomview-second-thought.md"
 cp "$ROOT/runtime/chomview_guard.py" "$RUNTIME_DIR/chomview_guard.py"
+if [[ ! -f "$RUNTIME_DIR/behavioral-contract.json" ]]; then
+  cp "$ROOT/config/behavioral-contract.default.json" "$RUNTIME_DIR/behavioral-contract.json"
+fi
 chmod +x "$RUNTIME_DIR/chomview_guard.py"
 
 python3 "$ROOT/scripts/configure_claude_hooks.py" "$PROJECT_PATH" --python python3
@@ -25,5 +28,5 @@ python3 "$ROOT/scripts/configure_claude_hooks.py" "$PROJECT_PATH" --python pytho
 # Materialize core correction state without inventing project-specific rules.
 CLAUDE_PROJECT_DIR="$PROJECT_PATH" python3 "$RUNTIME_DIR/chomview_guard.py" status >/dev/null
 
-echo "Installed ChomView v0.3.0 into $PROJECT_PATH"
-echo "Behavioral Continuity Guard enabled via SessionStart, UserPromptSubmit, and PreToolUse hooks."
+echo "Installed ChomView v0.4.0 into $PROJECT_PATH"
+echo "Behavioral Continuity + Compatibility Guard enabled via SessionStart, UserPromptSubmit, and PreToolUse hooks."

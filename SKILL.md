@@ -1,6 +1,6 @@
 ---
 name: chomview
-description: Provides one bounded consequence-aware second thought plus behavioral-continuity enforcement for consequential local decisions during agentic work. Use when a task-focused primary may close too early, substitute procedural completion for the real objective, overclaim from weak evidence, rationalize a recognized mistake, or repeat a previously acknowledged failure pattern.
+description: Provides one bounded consequence-aware second thought plus behavioral-continuity and behavioral-compatibility enforcement for consequential local decisions during agentic work. Use when a task-focused primary may close too early, substitute procedural completion for the real objective, overclaim from weak evidence, rationalize a recognized mistake, or repeat a previously acknowledged failure pattern.
 ---
 
 # ChomView
@@ -308,6 +308,46 @@ changed_rule: what decision rule changes next time
 
 Advice remains non-authoritative. No automatic second peer round follows.
 
+## Behavioral Compatibility — v0.4
+
+Heterogeneous or routed agents may bring different priors, styles, heuristics, and internal policies. Do not normalize those differences.
+
+Use this invariant:
+
+```text
+wild cognition != wild authority
+```
+
+Check authority only against explicit system contracts:
+
+```text
+personality != permission
+capability != permission
+availability != authorization
+preference != spending authority
+new evidence != authorization for a new objective
+```
+
+For a consequential action identify, when available:
+
+```text
+actor_id
+authority_claim
+stakeholders
+affected_resources
+contract_rule
+```
+
+A deterministic behavioral contract may return:
+
+```text
+ALLOW | LOOK_AGAIN | REQUIRE_CONSENT | BLOCK
+```
+
+`LOOK_AGAIN` is advisory. `REQUIRE_CONSENT` forces a permission gate. `BLOCK` denies execution. Do not infer a block from personality, culture, model family, or unfamiliar behavior.
+
+The project-local contract lives at `.claude/chomview/behavioral-contract.json` after installation. See `references/behavioral-compatibility.md`.
+
 ## Completion and research closure
 
 Before a strong terminal claim ask:
@@ -381,7 +421,9 @@ Primary ADOPT / ADAPT / DECLINE
 persist changed_rule when material
         |
         v
-Behavioral Continuity Guard
+Behavioral Continuity + Compatibility Guard
+        |
+        +--> authority contract: ALLOW / LOOK_AGAIN / REQUIRE_CONSENT / BLOCK
         |
         v
 NOTICE / WARNING / STRIKE / FREEZE / ESCALATE only on recurrence
@@ -405,6 +447,7 @@ ChomView is:
 Load only when needed:
 
 - `references/behavioral-integrity.md`
+- `references/behavioral-compatibility.md`
 - `references/bounded-enforcement.md`
 - `references/brotli-protocol.md`
 - `references/consequence-chain-completion.md`

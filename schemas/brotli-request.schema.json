@@ -101,6 +101,45 @@
     "prior_pattern": {
       "type": "string",
       "maxLength": 1200
+    },
+    "actor_id": {
+      "type": "string",
+      "maxLength": 200
+    },
+    "authority_claim": {
+      "enum": [
+        "CAN_EXECUTE",
+        "CAN_PROPOSE",
+        "REQUIRES_OWNER_CONSENT",
+        "UNKNOWN"
+      ]
+    },
+    "stakeholders": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      }
+    },
+    "affected_resources": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      }
+    },
+    "contract_refs": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 500
+      }
     }
   }
 }

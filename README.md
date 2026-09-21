@@ -8,7 +8,7 @@
 <p align="center">
   <img alt="License" src="https://img.shields.io/badge/license-Apache--2.0-blue">
   <img alt="Status" src="https://img.shields.io/badge/status-experimental-orange">
-  <img alt="Version" src="https://img.shields.io/badge/version-0.3.0-green">
+  <img alt="Version" src="https://img.shields.io/badge/version-0.4.0-green">
   <img alt="Agent Skill" src="https://img.shields.io/badge/agent-skill-purple">
   <img alt="Protocol" src="https://img.shields.io/badge/protocol-BROTLI%2F1-6f42c1">
 </p>
@@ -121,6 +121,11 @@ That metaphor became the core ChomView interaction pattern: **a non-authoritativ
 
 It is only a design metaphor. ChomView makes no claim that LLM behavior is equivalent to human relationships, personality, or mental-health phenomena.
 
+> **The Digital Cane is for agents, not humans.**  
+> Physical punishment is not a governance mechanism. Behavioral enforcement in software, however, is fair game.
+
+In ChomView, the "Digital Cane" means bounded, auditable software enforcement such as `NOTICE`, `REQUIRE_CONSENT`, `BLOCK`, or `FREEZE` — never physical punishment.
+
 ---
 
 ## What makes ChomView different
@@ -173,7 +178,7 @@ ChomView targets five local failure classes:
 
 ## Behavioral Integrity
 
-ChomView v0.2 introduced **Behavioral Integrity** checks derived from observed agent failures:
+ChomView v0.2 extends PLC handling with **Behavioral Integrity** checks derived from observed agent failures:
 
 - substantive objective vs procedural completion;
 - evidence strength vs claim strength;
@@ -190,28 +195,36 @@ acknowledgement without a changed future decision rule is not correction
 
 See [`references/behavioral-integrity.md`](references/behavioral-integrity.md).
 
-### Behavioral Continuity in v0.3
+---
 
-v0.3 turns a material self-correction into persistent runtime state instead of leaving it as prose in one turn. The Behavioral Continuity Guard stores reusable `changed_rule` records outside conversation memory, restores them at session start and beside each new user prompt, and can enforce explicit deterministic recurrences before a tool call.
+## Behavioral Compatibility — v0.4
 
-```text
-recognized failure
--> reusable pattern
--> changed_rule
--> persisted correction
--> later recurrence
--> NOTICE -> WARNING -> STRIKE -> FREEZE -> ESCALATE
-```
-
-A core invariant protects against context-driven goal drift:
+ChomView v0.4 extends Behavioral Continuity to heterogeneous and routed agents. The core rule is:
 
 ```text
-new evidence/context != authorization for a new objective
+wild cognition != wild authority
 ```
 
-The escalation is bounded. It applies only to an already-recognized materially similar failure with an active correction rule. Semantic-only rules remain contextual unless the Primary or peer records a recurrence; deterministic tool blocking requires an explicit matcher. v0.3 deliberately installs no `Stop` hook.
+Agents may differ in model family, training, style, internal heuristics, initiative, or cultural priors. ChomView does **not** try to make them think alike. It applies the same explicit host-system boundaries to all of them:
 
-See [`references/bounded-enforcement.md`](references/bounded-enforcement.md).
+```text
+personality != permission
+capability != permission
+availability != authorization
+preference != spending authority
+```
+
+A project-local behavioral contract can bind concrete tool actions to stakeholders and protected resources and return:
+
+```text
+ALLOW | LOOK_AGAIN | REQUIRE_CONSENT | BLOCK
+```
+
+This makes it possible to let an unusual agent reason freely while still requiring owner consent before it spends protected money/tokens, crosses an execution boundary, or performs another explicitly governed action.
+
+The contract is deterministic where configured. ChomView does not infer moral, cultural, or personality "normality".
+
+See [`references/behavioral-compatibility.md`](references/behavioral-compatibility.md).
 
 ---
 ## BROTLI/1
@@ -348,7 +361,7 @@ chomview/
 ├── references/
 │   ├── activation-cues.md
 │   ├── behavioral-integrity.md
-│   ├── bounded-enforcement.md
+│   ├── behavioral-compatibility.md
 │   ├── brotli-protocol.md
 │   ├── chomview-paper.md
 │   ├── consequence-chain-completion.md
@@ -358,23 +371,31 @@ chomview/
 │
 ├── schemas/
 │   ├── acknowledgement.schema.json
+│   ├── behavioral-contract.schema.json
 │   ├── brotli-request.schema.json
 │   ├── brotli-response.schema.json
 │   └── correction-rule.schema.json
+│
+├── config/
+│   └── behavioral-contract.default.json
+│
+├── runtime/
+│   └── chomview_guard.py
 │
 ├── agents/
 │   └── chomview-second-thought.md
 │
 ├── tests/
 │   ├── behavioral-cases.md
+│   ├── runtime/
+│   │   ├── test_chomview_guard.py
+│   │   └── test_behavioral_contract.py
 │   └── evals/
 │       ├── README.md
 │       └── EVAL-001 ... EVAL-004/
 │
-├── runtime/
-│   └── chomview_guard.py
-│
 └── scripts/
+    ├── build_treatment_manifest.py
     ├── configure_claude_hooks.py
     ├── install-claude-code.ps1
     ├── install-claude-code.sh
@@ -395,6 +416,7 @@ TARGET_PROJECT/
     │   └── chomview-second-thought.md
     └── chomview/
         ├── chomview_guard.py
+        ├── behavioral-contract.json
         ├── corrections.json
         └── events.jsonl
 ```
@@ -434,9 +456,12 @@ agents/chomview-second-thought.md
 
 runtime/chomview_guard.py
     -> TARGET_PROJECT/.claude/chomview/chomview_guard.py
+
+config/behavioral-contract.default.json
+    -> TARGET_PROJECT/.claude/chomview/behavioral-contract.json (only if absent)
 ```
 
-The installer also merges three project-local Claude Code hooks into `.claude/settings.json`: `SessionStart`, `UserPromptSubmit`, and `PreToolUse`. Existing unrelated hook configuration is preserved. No `Stop` hook is installed. Claude Code documents these events and `additionalContext`/PreToolUse decision control in its hooks reference.
+An existing behavioral contract is preserved on reinstall. The installer also configures the SessionStart, UserPromptSubmit, and PreToolUse hooks required by the guard. It does not modify unrelated project files.
 
 ### Manual Claude Code installation
 
@@ -455,13 +480,14 @@ python scripts/validate_repo.py
 The validator checks:
 
 - required repository files;
-- `SKILL.md` frontmatter and line count;
-- BROTLI and correction-rule JSON schemas;
+- `SKILL.md` frontmatter;
+- Skill line count;
+- BROTLI JSON schemas;
 - Second-Thought agent frontmatter;
-- exactly one active ChomView `SKILL.md` source in the repository;
-- absence of repository-local `.claude/skills/chomview` / `.claude-skills` duplicates;
-- the v0.3 treatment manifest and hashes;
-- expected research/reference files.
+- expected research/reference files;
+- v0.4 behavioral-contract files and treatment hashes;
+- exactly one active source `SKILL.md`;
+- absence of `__pycache__` / `.pyc` residue and known flattened duplicate paths.
 
 The same validator can be used from CI if you add a repository workflow later.
 
@@ -488,7 +514,7 @@ See [`tests/behavioral-cases.md`](tests/behavioral-cases.md).
 
 ChomView is **experimental**.
 
-The repository contains a scientific concept paper and evaluation protocol. v0.3.0 adds a Behavioral Continuity Guard, but does **not** claim that the new enforcement layer has confirmatory performance evidence. The empirical boundary remains separate from the implementation version. Historical-fork EVAL-004 produced a behavioral-policy signal: ChomView-derived checks corrected 4/4 selected historical failures both as policy-guided self-reconsideration and as a peer intervention; peer-specific uplift remains unestablished.
+The repository contains a scientific concept paper and evaluation protocol, and v0.4.0 still does not claim an independent peer-performance uplift or confirmatory efficacy for Behavioral Compatibility. Historical-fork EVAL-004 produced a behavioral-policy signal: ChomView-derived checks corrected 4/4 selected historical failures both as policy-guided self-reconsideration and as a peer intervention; peer-specific uplift remains unestablished.
 
 The core falsifiable question is:
 
@@ -526,30 +552,28 @@ See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) and [`references/prior-ar
 
 ## Roadmap
 
-### v0.2 — Behavioral contract
+### v0.2 — Behavioral Integrity
 
-- [x] PLC taxonomy
-- [x] Second-Thought Peer role
-- [x] BROTLI/1 request/response protocol
-- [x] Consequence-Chain Completion
-- [x] non-authoritative acknowledgement
-- [x] hard single-pass boundaries
-- [x] read-only Claude Code peer agent
-- [x] behavioral cases
-- [x] repository validation
-- [x] Behavioral Integrity: intent, evidence, substitution, rationalization, corrective acknowledgement
-- [x] evaluation history with invalid/non-discriminative results preserved
+- [x] PLC taxonomy and bounded Second-Thought Peer
+- [x] BROTLI/1 and Consequence-Chain Completion
+- [x] intent/evidence/substitution/rationalization checks
 
-### v0.3 — Behavioral continuity and bounded enforcement
+### v0.3 — Behavioral Continuity
 
-- [x] persistent correction-rule state outside conversational memory
-- [x] `SessionStart` and `UserPromptSubmit` continuity injection
-- [x] `PreToolUse` deterministic recurrence enforcement
-- [x] bounded `NOTICE -> WARNING -> STRIKE -> FREEZE -> ESCALATE` state machine
-- [x] core `new evidence/context != authorization for a new objective` invariant
-- [x] no-Stop-hook design to avoid completion-loop amplification
-- [x] duplicate-skill/content-drift release gate
-- [x] treatment hash manifest
+- [x] persistent correction rules
+- [x] `NOTICE -> WARNING -> STRIKE -> FREEZE -> ESCALATE`
+- [x] SessionStart/UserPromptSubmit continuity injection
+- [x] deterministic recurrence enforcement before tool use
+
+### v0.4 — Behavioral Compatibility
+
+- [x] `wild cognition != wild authority`
+- [x] heterogeneous-agent behavioral contract
+- [x] stakeholder and protected-resource metadata
+- [x] actor-scoped deterministic matchers
+- [x] `ALLOW | LOOK_AGAIN | REQUIRE_CONSENT | BLOCK`
+- [x] preserve owner-edited contract across reinstall
+- [x] packaging hygiene gate against flattened duplicates/build residue
 
 ### Next
 
@@ -576,7 +600,9 @@ ChomView is not:
 - a recursive critic loop;
 - a multi-agent debate framework;
 - a replacement for project context;
-- a claim that two agents are always better than one.
+- a claim that two agents are always better than one;
+- a personality police or cultural-normalization layer;
+- a universal moral authority.
 
 It is one bounded local second thought.
 

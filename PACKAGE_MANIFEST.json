@@ -1,16 +1,18 @@
 {
   "name": "ChomView",
-  "version": "0.3.0",
-  "base_source_commit": "73c4d30238b919e0d0421e340ffdcc3ef5b02ba8",
+  "version": "0.4.0",
+  "base_source_commit": "f1b209e0ae47250e5f71ec4b6ff76685d5544301",
   "generated_date": "2026-09-21",
   "major_changes": [
-    "Behavioral Continuity Guard",
-    "persistent correction rules",
-    "NOTICE-WARNING-STRIKE-FREEZE-ESCALATE bounded enforcement",
-    "SessionStart/UserPromptSubmit continuity injection",
-    "PreToolUse deterministic recurrence enforcement",
-    "duplicate-skill content-drift gate",
-    "treatment hash manifest"
+    "Behavioral Compatibility for heterogeneous agents",
+    "wild cognition != wild authority invariant",
+    "project-local behavioral contract",
+    "ALLOW-LOOK_AGAIN-REQUIRE_CONSENT-BLOCK authority decisions",
+    "stakeholder and protected-resource awareness",
+    "actor-scoped deterministic authority matchers",
+    "v0.3 Behavioral Continuity preserved",
+    "installer preserves owner-edited behavioral contract",
+    "packaging validator rejects pycache and flattened canonical duplicates"
   ],
-  "empirical_boundary": "v0.3.0 implements bounded behavioral continuity; it does not claim confirmatory efficacy for the new enforcement layer. Existing evaluation evidence remains historically separated from this implementation release."
+  "empirical_boundary": "v0.4.0 implements behavioral compatibility and authority enforcement but makes no confirmatory claim that the new layer improves benchmark performance, alignment, or cost efficiency. v0.3 evaluation evidence remains historically separated."
 }

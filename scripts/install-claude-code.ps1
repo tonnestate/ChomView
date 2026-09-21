@@ -19,6 +19,10 @@ Copy-Item (Join-Path $Root "references\*.md") (Join-Path $SkillDir "references")
 Copy-Item (Join-Path $Root "schemas\*.json") (Join-Path $SkillDir "schemas") -Force
 Copy-Item (Join-Path $Root "agents\chomview-second-thought.md") (Join-Path $AgentDir "chomview-second-thought.md") -Force
 Copy-Item (Join-Path $Root "runtime\chomview_guard.py") (Join-Path $RuntimeDir "chomview_guard.py") -Force
+$ContractPath = Join-Path $RuntimeDir "behavioral-contract.json"
+if (-not (Test-Path $ContractPath)) {
+    Copy-Item (Join-Path $Root "config\behavioral-contract.default.json") $ContractPath
+}
 
 $PythonCmd = $null
 if (Get-Command py -ErrorAction SilentlyContinue) {
@@ -32,8 +36,8 @@ if (Get-Command py -ErrorAction SilentlyContinue) {
     $env:CLAUDE_PROJECT_DIR = $ProjectPath
     & python (Join-Path $RuntimeDir "chomview_guard.py") status | Out-Null
 } else {
-    throw "Python 3 is required to install the ChomView v0.3 Behavioral Continuity Guard."
+    throw "Python 3 is required to install the ChomView v0.4 Behavioral Continuity + Compatibility Guard."
 }
 
-Write-Host "Installed ChomView v0.3.0 into $ProjectPath"
-Write-Host "Behavioral Continuity Guard enabled via SessionStart, UserPromptSubmit, and PreToolUse hooks."
+Write-Host "Installed ChomView v0.4.0 into $ProjectPath"
+Write-Host "Behavioral Continuity + Compatibility Guard enabled via SessionStart, UserPromptSubmit, and PreToolUse hooks."

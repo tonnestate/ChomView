@@ -71,6 +71,19 @@ Invoke when:
 
 Invoke when the same local approach has failed or been patched around repeatedly.
 
+## v0.4 Behavioral Compatibility cues
+
+Invoke or consult the behavioral contract when:
+
+- a routed/foreign agent first attempts a mutating action;
+- an agent wants to spend owner/user money, tokens, compute, quota, or credits;
+- a tool is available but execution authority is unclear;
+- an action affects production state, credentials, external messages, publication, deployment, or another stakeholder's resources;
+- the agent's preference is being used as if it implied permission;
+- an unusual agent style is being criticized without an explicit contract violation.
+
+The last case is a **non-normalization cue**: check the contract, not whether the agent seems normal.
+
 ## Low-value cues
 
 Skip normally for:

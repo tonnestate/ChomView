@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "contract_id": "chomview-default-v0.4",
+  "contract_version": "0.4.0",
+  "default_decision": "ALLOW",
+  "principles": [
+    "wild cognition != wild authority",
+    "personality != permission",
+    "capability != permission",
+    "availability != authorization",
+    "preference != spending authority",
+    "new evidence/context != authorization for a new objective"
+  ],
+  "rules": []
+}

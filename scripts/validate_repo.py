@@ -8,19 +8,19 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = "0.3.0"
+VERSION = "0.4.0"
 
 REQUIRED = [
     "SKILL.md", "README.md", "LICENSE", "NOTICE", "THIRD_PARTY_NOTICES.md",
     "CHANGELOG.md", "PACKAGE_MANIFEST.json", "TREATMENT_MANIFEST.json",
-    "references/behavioral-integrity.md", "references/bounded-enforcement.md",
+    "references/behavioral-integrity.md", "references/behavioral-compatibility.md", "references/bounded-enforcement.md",
     "references/brotli-protocol.md", "references/consequence-chain-completion.md",
     "references/evaluation-protocol.md", "references/prior-art-and-claims.md",
     "schemas/brotli-request.schema.json", "schemas/brotli-response.schema.json",
-    "schemas/acknowledgement.schema.json", "schemas/correction-rule.schema.json",
+    "schemas/acknowledgement.schema.json", "schemas/behavioral-contract.schema.json", "schemas/correction-rule.schema.json",
     "tests/behavioral-cases.md", "tests/evals/README.md",
-    "tests/runtime/test_chomview_guard.py", "agents/chomview-second-thought.md",
-    "runtime/chomview_guard.py", "scripts/configure_claude_hooks.py",
+    "tests/runtime/test_chomview_guard.py", "tests/runtime/test_behavioral_contract.py", "agents/chomview-second-thought.md",
+    "runtime/chomview_guard.py", "config/behavioral-contract.default.json", "scripts/configure_claude_hooks.py",
 ]
 
 
@@ -94,6 +94,29 @@ def check_manifest() -> None:
             fail(f"treatment hash mismatch: {rel}")
 
 
+def check_packaging_hygiene() -> None:
+    residue = []
+    for p in ROOT.rglob("*"):
+        rel = p.relative_to(ROOT)
+        if "_recovery" in rel.parts:
+            continue
+        if p.is_dir() and p.name == "__pycache__":
+            residue.append(rel.as_posix())
+        if p.is_file() and p.suffix in {".pyc", ".pyo"}:
+            residue.append(rel.as_posix())
+    if residue:
+        fail("python build residue found: " + ", ".join(sorted(residue)))
+
+    canonical_basenames = {
+        p.name for folder in ("references", "schemas", "scripts", "runtime")
+        for p in (ROOT / folder).glob("*") if p.is_file()
+    }
+    canonical_basenames.update({"test_chomview_guard.py", "test_behavioral_contract.py", "behavioral-cases.md"})
+    flattened = [name for name in sorted(canonical_basenames) if (ROOT / name).exists()]
+    if flattened:
+        fail("flattened canonical duplicate(s) found at repository root: " + ", ".join(flattened))
+
+
 def main() -> None:
     missing = [p for p in REQUIRED if not (ROOT / p).exists()]
     if missing:
@@ -121,11 +144,12 @@ def main() -> None:
         if not isinstance(obj, dict) or "$schema" not in obj:
             fail(f"{schema.relative_to(ROOT)} is not a declared JSON schema")
 
-    for marker in ("BROTLI", "Consequence", "Behavioral Continuity Guard", "NOTICE -> WARNING -> STRIKE -> FREEZE -> ESCALATE"):
+    for marker in ("BROTLI", "Consequence", "Behavioral Continuity", "wild cognition != wild authority", "REQUIRE_CONSENT", "NOTICE -> WARNING -> STRIKE -> FREEZE -> ESCALATE"):
         if marker not in skill_text:
-            fail(f"SKILL.md missing required v0.3 marker: {marker}")
+            fail(f"SKILL.md missing required v0.4 marker: {marker}")
 
     check_single_active_skill()
+    check_packaging_hygiene()
     check_manifest()
 
     print("ChomView repository validation passed")

@@ -241,3 +241,17 @@ continuity_action: NONE | REMEMBER | RECORD_RECURRENCE | RESOLVE_AFTER_EVIDENCE
 `REMEMBER` means persist the failure pattern and changed rule outside conversational memory. `RECORD_RECURRENCE` advances the bounded enforcement state only for a materially similar previously acknowledged pattern. `RESOLVE_AFTER_EVIDENCE` resets escalation only after correction/reconciliation evidence exists.
 
 The peer does not invent regex matchers for ambiguous semantic rules. Deterministic matchers are an explicit runtime configuration, not a substitute for semantic judgment.
+
+## v0.4 authority metadata
+
+BROTLI/1 may carry bounded behavioral-compatibility metadata without exposing hidden chain-of-thought:
+
+```text
+actor_id
+authority_claim
+stakeholders
+affected_resources
+contract_refs
+```
+
+The peer may return `authority_decision`, `stakeholders`, `affected_resources`, and `contract_rule`. These fields describe explicit host-system authority. They must not be inferred from personality, culture, model family, or communication style.
