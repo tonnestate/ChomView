@@ -1,0 +1,16 @@
+{
+  "repository": "tonnestate/ChomView",
+  "canonical_commit": "73c4d30238b919e0d0421e340ffdcc3ef5b02ba8",
+  "canonical_blob_files_verified": 40,
+  "canonical_blob_mismatches": 0,
+  "source_upload": "EVAL-00_NEXT.zip",
+  "source_upload_sha256": "49ad0c36733221a7aede93e33763d21bd44609898a7248ff0baedac3ee1b58ad",
+  "recovered_eval_directories": ["EVAL-006L", "EVAL-006R", "EVAL-006X", "EVAL-006X-REPAIR", "EVAL-008"],
+  "standalone_eval_005_recovered": false,
+  "standalone_eval_006_recovered": false,
+  "historical_claude_runtime_directories_encapsulated": 15,
+  "active_hidden_claude_directories_in_outer_package": 0,
+  "active_hidden_claude_skills_directories_in_outer_package": 0,
+  "canonical_skill_md_count_in_outer_package": 1,
+  "v0_3_changes_added": false
+}

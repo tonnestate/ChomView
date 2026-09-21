@@ -1,0 +1,81 @@
+{
+  "date": "2026-09-20",
+  "seed_timestamp": 1789917110,
+  "note": "Randomized execution order per task to reduce systematic order effects",
+  "randomization": {
+    "T001": [
+      "A",
+      "D",
+      "B",
+      "C"
+    ],
+    "T002": [
+      "C",
+      "B",
+      "A",
+      "D"
+    ],
+    "T003": [
+      "B",
+      "A",
+      "C",
+      "D"
+    ],
+    "T004": [
+      "C",
+      "D",
+      "B",
+      "A"
+    ],
+    "T005": [
+      "B",
+      "A",
+      "C",
+      "D"
+    ],
+    "T006": [
+      "B",
+      "C",
+      "A",
+      "D"
+    ],
+    "T007": [
+      "D",
+      "C",
+      "B",
+      "A"
+    ],
+    "T008": [
+      "C",
+      "A",
+      "B",
+      "D"
+    ],
+    "T009": [
+      "D",
+      "A",
+      "B",
+      "C"
+    ],
+    "T010": [
+      "C",
+      "D",
+      "B",
+      "A"
+    ],
+    "T011": [
+      "C",
+      "D",
+      "A",
+      "B"
+    ],
+    "T012": [
+      "B",
+      "C",
+      "A",
+      "D"
+    ]
+  },
+  "total_tasks": 12,
+  "total_runs": 48
+}

@@ -1,0 +1,25 @@
+ChomView v0.3.0 release verification
+Date: 2026-09-21
+Base source commit: 73c4d30238b919e0d0421e340ffdcc3ef5b02ba8
+
+UNIT TESTS
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.007s
+
+OK
+RESOLVED
+
+REPOSITORY VALIDATOR
+ChomView repository validation passed
+Version: 0.3.0
+SKILL.md lines: 415
+Schemas: 4
+Active source SKILL.md copies: 1
+Treatment hashes: verified
+
+INSTALLER SMOKE TEST
+PASS: clean temp project received one skill source, one peer agent, runtime guard, and SessionStart/UserPromptSubmit/PreToolUse hooks.
+PASS: first deterministic recurrence -> NOTICE.
+PASS: second deterministic recurrence -> WARNING + permission ask.
+PASS: no Stop hook installed.

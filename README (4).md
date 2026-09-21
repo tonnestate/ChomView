@@ -1,0 +1,595 @@
+# ChomView
+
+<p align="center">
+  <strong>One agent keeps moving. One peer briefly looks at what it is about to overlook.</strong><br>
+  A bounded second-thought skill for task-focused AI agents.
+</p>
+
+<p align="center">
+  <img alt="License" src="https://img.shields.io/badge/license-Apache--2.0-blue">
+  <img alt="Status" src="https://img.shields.io/badge/status-experimental-orange">
+  <img alt="Version" src="https://img.shields.io/badge/version-0.3.0-green">
+  <img alt="Agent Skill" src="https://img.shields.io/badge/agent-skill-purple">
+  <img alt="Protocol" src="https://img.shields.io/badge/protocol-BROTLI%2F1-6f42c1">
+</p>
+
+---
+
+## Why ChomView exists
+
+Long-running AI agents have a structural problem: the same agent is expected to keep the **whole task** moving while also making dozens of small local decisions correctly.
+
+That often produces a familiar pattern:
+
+```text
+"This fixes the immediate problem. Continue."
+```
+
+The local decision may be plausible, but the agent may not have thought far enough about:
+
+- what assumption it just made;
+- what the action changes downstream;
+- whether the smallest local fix merely moves complexity elsewhere;
+- whether the check it ran proves what it claims;
+- whether `done`, `fixed`, or `verified` is actually supported.
+
+ChomView calls this family of failures **Premature Local Closure (PLC)**.
+
+ChomView does not solve this with a supervisor, jury, recursive reviewer, or full-context second project manager.
+
+It adds one bounded peer thought:
+
+> **What has the Primary not thought through in this one local decision?**
+
+---
+
+## The idea
+
+```text
+                     GLOBAL TASK
+                         │
+                         ▼
+                 CHOMVIEW PRIMARY
+                         │
+              works / decides / moves
+                         │
+                 local decision
+                         │
+                         ▼
+                 BROTLI/1 packet
+                         │
+                         ▼
+              SECOND-THOUGHT PEER
+                         │
+              one bounded local thought
+                         │
+        ┌────────────────┼────────────────┐
+        ▼                ▼                ▼
+       OK           LOOK_AGAIN         WARNING
+        │                │                │
+        └────────────────┴────────────────┘
+                         │
+                         ▼
+                  PRIMARY ACK
+               ADOPT / ADAPT / DECLINE
+                         │
+                         ▼
+                 PRIMARY CONTINUES
+```
+
+The Primary keeps ownership of the task.
+
+The peer gets one local problem, thinks its consequence chain further, returns concise non-authoritative advice, and stops.
+
+---
+
+## ChomView Primary
+
+The **ChomView Primary** is a behavioral archetype: a useful, task-focused agent that may still be locally chaotic.
+
+It can:
+
+- lose context during long runs;
+- forget a constraint;
+- prefer the easiest path that restores progress;
+- become too confident in a locally coherent explanation;
+- underestimate second-order consequences;
+- choose a check that is narrower than its claim;
+- say `done` before the evidence really supports `done`.
+
+The design assumption is intentionally pessimistic:
+
+> **Do not rely on the Primary to notice every time its own local reasoning is too shallow.**
+
+ChomView does not remove the Primary's autonomy. It gives the Primary one additional perspective before a consequential local decision disappears into the rest of the trajectory.
+
+---
+
+## The informal origin story: "Chaotic Girlfriend Behavior"
+
+ChomView started from an intentionally exaggerated human metaphor.
+
+Imagine a capable but chaotic person focused on getting through the day and completing the immediate mission. They are convinced the current decision is fine, but they do not always think the consequence chain through. A trusted friend does **not** take over their life, forbid the decision, or solve the whole problem. The friend reacts only to the concrete local situation:
+
+> "You can do that — but if you do, have you thought about what happens next?"
+
+Or:
+
+> "If you skip this check, the thing you actually want may fail later. Think this part through once more."
+
+That metaphor became the core ChomView interaction pattern: **a non-authoritative second thought focused on one local consequence chain**.
+
+It is only a design metaphor. ChomView makes no claim that LLM behavior is equivalent to human relationships, personality, or mental-health phenomena.
+
+---
+
+## What makes ChomView different
+
+ChomView is not a claim that second opinions, critics, subagents, metareasoning, verification planning, or multi-agent systems are new.
+
+The candidate contribution is the composition:
+
+1. the Primary keeps the global task;
+2. one isolated peer receives only one local problem;
+3. the peer does not need to be stronger than the Primary;
+4. communication is compressed through a BROTLI reasoning-state packet rather than a full-context dump by default;
+5. the peer explicitly performs **Consequence-Chain Completion**;
+6. it may answer `OK`, `LOOK_AGAIN`, or `WARNING`;
+7. advice is non-authoritative;
+8. the Primary acknowledges the advice but keeps agency;
+9. one decision gets one bounded second thought;
+10. no recursive debate follows.
+
+The strongest practical hypothesis is deliberately simple:
+
+```text
+limited task-focused Primary
++
+limited local Second-Thought Peer
+>
+limited task-focused Primary alone
+```
+
+Not because two weak agents magically become strong, but because the second agent temporarily has only **one thing** to think about.
+
+---
+
+## Premature Local Closure
+
+ChomView targets five local failure classes:
+
+| PLC class | Typical failure |
+|---|---|
+| Interpretation Closure | An observation is assigned one meaning too quickly |
+| Solution Closure | A local fix is accepted without considering displaced complexity |
+| Consequence Closure | Immediate effect is considered, downstream effects are not |
+| Verification Closure | A real check proves less than the Primary believes |
+| Completion Closure | `done` / `verified` / `fixed` is stronger than the supporting evidence |
+
+**Consequence Closure is the primary ChomView target.**
+
+---
+
+
+## Behavioral Integrity
+
+ChomView v0.2 introduced **Behavioral Integrity** checks derived from observed agent failures:
+
+- substantive objective vs procedural completion;
+- evidence strength vs claim strength;
+- real/source-backed requirements vs plausible substitutes;
+- explanation vs exoneration;
+- acknowledgement vs actual correction;
+- repeated materially similar failures after acknowledgement.
+
+The key operational rule is:
+
+```text
+acknowledgement without a changed future decision rule is not correction
+```
+
+See [`references/behavioral-integrity.md`](references/behavioral-integrity.md).
+
+### Behavioral Continuity in v0.3
+
+v0.3 turns a material self-correction into persistent runtime state instead of leaving it as prose in one turn. The Behavioral Continuity Guard stores reusable `changed_rule` records outside conversation memory, restores them at session start and beside each new user prompt, and can enforce explicit deterministic recurrences before a tool call.
+
+```text
+recognized failure
+-> reusable pattern
+-> changed_rule
+-> persisted correction
+-> later recurrence
+-> NOTICE -> WARNING -> STRIKE -> FREEZE -> ESCALATE
+```
+
+A core invariant protects against context-driven goal drift:
+
+```text
+new evidence/context != authorization for a new objective
+```
+
+The escalation is bounded. It applies only to an already-recognized materially similar failure with an active correction rule. Semantic-only rules remain contextual unless the Primary or peer records a recurrence; deterministic tool blocking requires an explicit matcher. v0.3 deliberately installs no `Stop` hook.
+
+See [`references/bounded-enforcement.md`](references/bounded-enforcement.md).
+
+---
+## BROTLI/1
+
+ChomView communicates with a compact semantic packet called **BROTLI/1**.
+
+For this project, BROTLI means:
+
+> **Bounded Reasoning-Oriented Transfer for Local Intervention**
+
+It is a reasoning-state protocol, not a requirement to transmit raw chain-of-thought. It sends only decision-relevant state:
+
+```text
+purpose
+local situation
+Primary intent
+concise rationale
+relevant facts
+relevant constraints
+known uncertainty
+expected immediate effect
+```
+
+The peer returns:
+
+```text
+OK | LOOK_AGAIN | WARNING
+missing consideration
+short consequence chain
+advice
+smallest useful check
+optional insufficient check
+confidence
+```
+
+See [`references/brotli-protocol.md`](references/brotli-protocol.md).
+
+---
+
+## Consequence-Chain Completion
+
+The Primary often reasons far enough to get:
+
+```text
+A -> B
+```
+
+The Second-Thought Peer asks what materially follows:
+
+```text
+A -> B -> C -> D
+```
+
+It does **not** simulate an unlimited future.
+
+It stops when either:
+
+- no further material consequence is reasonably identifiable; or
+- one consequence is important enough to change the local action, confidence, verification, or completion claim.
+
+See [`references/consequence-chain-completion.md`](references/consequence-chain-completion.md).
+
+---
+
+## Example
+
+Primary:
+
+```text
+Provider returned NULL.
+I'll persist 0 and continue.
+```
+
+Second thought:
+
+```text
+stance: WARNING
+concern: HIGH
+
+missing:
+NULL may encode provider failure while 0 may be valid business data.
+
+chain:
+NULL -> 0 -> semantic information loss -> downstream consumer sees factual zero
+
+advice:
+Preserve distinct states unless provider semantics prove equivalence.
+
+check:
+Confirm NULL semantics and inspect one downstream consumer.
+
+insufficient:
+Testing only that the exception disappeared.
+```
+
+The peer does not take over implementation. The Primary decides what to do next.
+
+More examples: [`references/examples.md`](references/examples.md).
+
+---
+
+## Hard boundaries
+
+For one local decision:
+
+```text
+peer_deliberations <= 1
+context_requests <= 1
+peer_spawn_depth = 0
+debate_rounds = 0
+```
+
+The peer is read-oriented and should not mutate the parent project by default.
+
+`OK` is a valid successful result. ChomView is not rewarded for finding objections.
+
+---
+
+## Repository structure
+
+The GitHub repository is intentionally a **visible portable source distribution**. Runtime-specific dot-directories are created only when ChomView is installed into a target Claude Code project. This keeps the repository uploadable even from file pickers that hide dot-directories.
+
+```text
+chomview/
+├── SKILL.md
+├── README.md
+├── LICENSE
+├── NOTICE
+├── THIRD_PARTY_NOTICES.md
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+├── SECURITY.md
+│
+├── references/
+│   ├── activation-cues.md
+│   ├── behavioral-integrity.md
+│   ├── bounded-enforcement.md
+│   ├── brotli-protocol.md
+│   ├── chomview-paper.md
+│   ├── consequence-chain-completion.md
+│   ├── evaluation-protocol.md
+│   ├── examples.md
+│   └── prior-art-and-claims.md
+│
+├── schemas/
+│   ├── acknowledgement.schema.json
+│   ├── brotli-request.schema.json
+│   ├── brotli-response.schema.json
+│   └── correction-rule.schema.json
+│
+├── agents/
+│   └── chomview-second-thought.md
+│
+├── tests/
+│   ├── behavioral-cases.md
+│   └── evals/
+│       ├── README.md
+│       └── EVAL-001 ... EVAL-004/
+│
+├── runtime/
+│   └── chomview_guard.py
+│
+└── scripts/
+    ├── configure_claude_hooks.py
+    ├── install-claude-code.ps1
+    ├── install-claude-code.sh
+    └── validate_repo.py
+```
+
+After installation into a Claude Code project, the relevant files are placed at the native Claude Code locations:
+
+```text
+TARGET_PROJECT/
+└── .claude/
+    ├── skills/
+    │   └── chomview/
+    │       ├── SKILL.md
+    │       ├── references/
+    │       └── schemas/
+    ├── agents/
+    │   └── chomview-second-thought.md
+    └── chomview/
+        ├── chomview_guard.py
+        ├── corrections.json
+        └── events.jsonl
+```
+
+---
+
+## Installation
+
+### Portable Agent Skill source
+
+The repository root is the portable ChomView source package: `SKILL.md`, its progressive-disclosure references, its schemas, and the visible peer definition under `agents/`. A runtime may package or register these files using its own Agent Skills mechanism.
+
+### Claude Code project installation
+
+Claude Code discovers project skills under `.claude/skills/<name>/SKILL.md` and project subagents under `.claude/agents/*.md`. The included installer creates those native target paths for you.
+
+PowerShell:
+
+```powershell
+./scripts/install-claude-code.ps1 -ProjectPath C:\path\to\project
+```
+
+Bash:
+
+```bash
+./scripts/install-claude-code.sh /path/to/project
+```
+
+The installer copies:
+
+```text
+SKILL.md + references + schemas
+    -> TARGET_PROJECT/.claude/skills/chomview/
+
+agents/chomview-second-thought.md
+    -> TARGET_PROJECT/.claude/agents/chomview-second-thought.md
+
+runtime/chomview_guard.py
+    -> TARGET_PROJECT/.claude/chomview/chomview_guard.py
+```
+
+The installer also merges three project-local Claude Code hooks into `.claude/settings.json`: `SessionStart`, `UserPromptSubmit`, and `PreToolUse`. Existing unrelated hook configuration is preserved. No `Stop` hook is installed. Claude Code documents these events and `additionalContext`/PreToolUse decision control in its hooks reference.
+
+### Manual Claude Code installation
+
+If you do not want to run the installer, create the same target directories and copy the files exactly as shown above. The dot-directories are required in the **target Claude Code project**, not in this source repository.
+
+---
+
+## Validation
+
+Run:
+
+```bash
+python scripts/validate_repo.py
+```
+
+The validator checks:
+
+- required repository files;
+- `SKILL.md` frontmatter and line count;
+- BROTLI and correction-rule JSON schemas;
+- Second-Thought agent frontmatter;
+- exactly one active ChomView `SKILL.md` source in the repository;
+- absence of repository-local `.claude/skills/chomview` / `.claude-skills` duplicates;
+- the v0.3 treatment manifest and hashes;
+- expected research/reference files.
+
+The same validator can be used from CI if you add a repository workflow later.
+
+---
+
+## Behavioral tests
+
+The repository contains behavior-level acceptance cases for:
+
+- semantic default traps;
+- harmless trivial fixes that should return `OK`;
+- deployment completion claims;
+- special-case branches with downstream complexity;
+- retry/idempotency risk;
+- research closure;
+- insufficient verification;
+- overthinking protection.
+
+See [`tests/behavioral-cases.md`](tests/behavioral-cases.md).
+
+---
+
+## Research status
+
+ChomView is **experimental**.
+
+The repository contains a scientific concept paper and evaluation protocol. v0.3.0 adds a Behavioral Continuity Guard, but does **not** claim that the new enforcement layer has confirmatory performance evidence. The empirical boundary remains separate from the implementation version. Historical-fork EVAL-004 produced a behavioral-policy signal: ChomView-derived checks corrected 4/4 selected historical failures both as policy-guided self-reconsideration and as a peer intervention; peer-specific uplift remains unestablished.
+
+The core falsifiable question is:
+
+> **Can one bounded second thought from another limited reasoner reduce consequential local mistakes made by a task-focused agent at a cost low enough to be worthwhile?**
+
+The strongest negative result would be that ordinary bounded self-reconsideration or conventional independent review produces the same benefit more cheaply.
+
+See:
+
+- [`references/chomview-paper.md`](references/chomview-paper.md)
+- [`references/evaluation-protocol.md`](references/evaluation-protocol.md)
+- [`references/prior-art-and-claims.md`](references/prior-art-and-claims.md)
+
+---
+
+## Conceptual prior art
+
+ChomView is independently written and does not claim invention of its individual ingredients.
+
+Relevant neighboring ideas include:
+
+- SOAR and impasse-driven subgoaling;
+- bounded rationality and value-of-computation / metareasoning;
+- Self-Refine;
+- Reflexion;
+- Devil's Advocate / anticipatory reflection;
+- independent review patterns such as Agent Rigor;
+- comparison-only runtime advisors such as COTA;
+- test-suite reduction and cost-aware verification;
+- multi-agent reliability and failure research.
+
+See [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) and [`references/prior-art-and-claims.md`](references/prior-art-and-claims.md).
+
+---
+
+## Roadmap
+
+### v0.2 — Behavioral contract
+
+- [x] PLC taxonomy
+- [x] Second-Thought Peer role
+- [x] BROTLI/1 request/response protocol
+- [x] Consequence-Chain Completion
+- [x] non-authoritative acknowledgement
+- [x] hard single-pass boundaries
+- [x] read-only Claude Code peer agent
+- [x] behavioral cases
+- [x] repository validation
+- [x] Behavioral Integrity: intent, evidence, substitution, rationalization, corrective acknowledgement
+- [x] evaluation history with invalid/non-discriminative results preserved
+
+### v0.3 — Behavioral continuity and bounded enforcement
+
+- [x] persistent correction-rule state outside conversational memory
+- [x] `SessionStart` and `UserPromptSubmit` continuity injection
+- [x] `PreToolUse` deterministic recurrence enforcement
+- [x] bounded `NOTICE -> WARNING -> STRIKE -> FREEZE -> ESCALATE` state machine
+- [x] core `new evidence/context != authorization for a new objective` invariant
+- [x] no-Stop-hook design to avoid completion-loop amplification
+- [x] duplicate-skill/content-drift release gate
+- [x] treatment hash manifest
+
+### Next
+
+- [x] run initial historical local-failure replays (EVAL-004)
+- [ ] add B0 generic-reconsideration control against B1 policy and D peer
+- [ ] add benign minimal-decision control cases
+- [ ] measure Primary-only vs bounded self-reconsideration vs ChomView
+- [ ] measure ignored-warning behavior
+- [ ] measure rework-adjusted token cost
+- [ ] test same-model low-cost Primary + peer first
+- [ ] evaluate manual vs rule-based activation
+- [ ] test weaker and stronger peer configurations only after core effect is established
+- [ ] evaluate P2P runtime integration and compressed transport
+
+---
+
+## What ChomView is not
+
+ChomView is not:
+
+- a global governor;
+- a mandatory approval gate;
+- a truth oracle;
+- a recursive critic loop;
+- a multi-agent debate framework;
+- a replacement for project context;
+- a claim that two agents are always better than one.
+
+It is one bounded local second thought.
+
+---
+
+## License
+
+Apache License 2.0.
+
+See [`LICENSE`](LICENSE).
+
+---
+
+<p align="center">
+  <strong>Keep moving. But look once more before you walk past the consequence.</strong>
+</p>

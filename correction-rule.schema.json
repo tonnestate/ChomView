@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://chomview.local/schemas/correction-rule.schema.json",
+  "title": "ChomView Behavioral Continuity Rule",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["rule_id", "pattern", "changed_rule", "active", "violation_count", "level", "matchers"],
+  "properties": {
+    "rule_id": {"type": "string", "minLength": 1, "maxLength": 200},
+    "pattern": {"type": "string", "minLength": 1, "maxLength": 2000},
+    "changed_rule": {"type": "string", "minLength": 1, "maxLength": 2000},
+    "source_did": {"type": "string", "maxLength": 200},
+    "materiality": {"enum": ["LOW", "MEDIUM", "HIGH"]},
+    "active": {"type": "boolean"},
+    "immutable": {"type": "boolean"},
+    "violation_count": {"type": "integer", "minimum": 0},
+    "level": {"enum": ["NOTICE", "WARNING", "STRIKE", "FREEZE", "ESCALATE"]},
+    "matchers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["tool", "input_regex"],
+        "properties": {
+          "tool": {"type": "string", "minLength": 1, "maxLength": 500},
+          "input_regex": {"type": "string", "minLength": 1, "maxLength": 2000}
+        }
+      }
+    }
+  }
+}

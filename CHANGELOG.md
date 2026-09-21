@@ -31,3 +31,25 @@ All notable changes to ChomView will be documented here.
 - Evaluation protocol separates generic self-reconsideration (B0), ChomView-policy self-reconsideration (B1), generic peer (C), and ChomView peer (D).
 - Behavioral cases expanded for goal substitution, synthetic evidence substitution, premature termination, rationalization, and repeated acknowledged failures.
 
+
+## [0.3.0] - 2026-09-21
+
+### Added
+- Behavioral Continuity Guard with persistent correction rules outside conversational memory.
+- Bounded recurrence states: `NOTICE -> WARNING -> STRIKE -> FREEZE -> ESCALATE`.
+- Project-local Claude Code hooks for `SessionStart`, `UserPromptSubmit`, and `PreToolUse`.
+- Core scope-integrity invariant: new evidence/context does not authorize a new objective or scope expansion.
+- `runtime/chomview_guard.py` and deterministic correction-rule matcher enforcement.
+- `references/bounded-enforcement.md` and `schemas/correction-rule.schema.json`.
+- Treatment manifest with SHA-256 provenance for active behavioral files.
+- Duplicate-skill/content-drift validation gate.
+
+### Changed
+- Material corrective acknowledgement now persists a reusable rule instead of relying on conversational recall alone.
+- Installers configure the Behavioral Continuity Guard while preserving unrelated Claude Code hook settings.
+- Second-Thought Peer can identify continuity actions (`REMEMBER`, `RECORD_RECURRENCE`, `RESOLVE_AFTER_EVIDENCE`).
+
+### Safety / boundedness
+- No `Stop` hook is installed; v0.3 avoids recursive completion-loop enforcement.
+- Deterministic blocking is limited to explicit persisted matchers and freeze state. Semantic-only rules are injected as context and are not mechanically overgeneralized.
+- v0.3 is an implementation release, not a claim of confirmatory performance validation.

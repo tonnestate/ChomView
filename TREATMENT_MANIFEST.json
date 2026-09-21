@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "name": "ChomView",
+  "version": "0.3.0",
+  "treatment_id": "chomview-v0.3.0-behavioral-continuity",
+  "base_source_commit": "73c4d30238b919e0d0421e340ffdcc3ef5b02ba8",
+  "files": {
+    "SKILL.md": "730ae28a313499608574fba6cd357ad60af58efbc9539529f94be79dabb0b127",
+    "agents/chomview-second-thought.md": "32d4e3025735ae2546a423cee86a1867901ebed75e7cb50225af0e651348cbb8",
+    "references/activation-cues.md": "021e40b7c6e193f3a55f9632992117195588dfb034ea1af2e25050134c2a9c11",
+    "references/behavioral-integrity.md": "c257958f87c6070841cff720f6193ea0d6f918a0fa414fce955b8c7d43da1337",
+    "references/bounded-enforcement.md": "cd670a7e1f5d2096232295d7a205ba5083f68bb4e30c63989e7849946a51dad0",
+    "references/brotli-protocol.md": "9bb87dca82e0b35111c1aa0607ce2ae89b33ce94d3bbe1dc64f5969ada75051a",
+    "references/consequence-chain-completion.md": "31d11507219df99e0ab755760a84bcf3dbf921ac2e3782a5c5f5fb941b3d95fd",
+    "schemas/acknowledgement.schema.json": "fd80620e667f32f0bde67a412257b72914d55cdba777a717570a2c297fc4c6b1",
+    "schemas/brotli-request.schema.json": "b5983b0d0fcd6b57123564412edb6d25d1b1f6775b1e8d602d2d11501b3d2a29",
+    "schemas/brotli-response.schema.json": "9d5309bab61689669ea8e293620c12e6ea73e89187deb57fc958921932000468",
+    "schemas/correction-rule.schema.json": "449a28b1fafba63b5289ee4b6ac0b4edad1bce45df505a6b55f365fd05bcd1d3",
+    "runtime/chomview_guard.py": "814511480a3a25041495382d3453d4d79ddbaf376f0ff4c85b9303594e193230",
+    "scripts/configure_claude_hooks.py": "817f2634d35f3372b69e6f3166747bf78834d90df84ecc8cda95bf658e8aba94",
+    "scripts/install-claude-code.sh": "c83d7d909c1627831fa54f5c2c7770b9be8ae1bbbda2a8db6ddf24d9e4341aa5",
+    "scripts/install-claude-code.ps1": "310cbf6649cd461baf1e5310d95c71b9023b08a58d272de92a5a4cc3f3c95c8c"
+  }
+}

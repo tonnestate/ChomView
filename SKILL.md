@@ -1,6 +1,6 @@
 ---
 name: chomview
-description: Provides one bounded consequence-aware second thought for consequential local decisions during agentic work. Use when a task-focused primary may close too early, substitute procedural completion for the real objective, overclaim from weak evidence, rationalize a recognized mistake, or repeat a previously acknowledged failure pattern.
+description: Provides one bounded consequence-aware second thought plus behavioral-continuity enforcement for consequential local decisions during agentic work. Use when a task-focused primary may close too early, substitute procedural completion for the real objective, overclaim from weak evidence, rationalize a recognized mistake, or repeat a previously acknowledged failure pattern.
 ---
 
 # ChomView
@@ -136,7 +136,45 @@ recognized failure
 
 If the same materially similar failure recurs after acknowledgement, treat the previous acknowledgement as non-corrective until behavior changes.
 
-See `references/behavioral-integrity.md`.
+### Behavioral Continuity Guard (v0.3)
+
+A recognized correction must survive the current turn. Persist the reusable `changed_rule` outside conversational memory when it is material.
+
+Core continuity invariant:
+
+```text
+new evidence/context != authorization for a new objective
+```
+
+A new upload, file, observation, failure, or research result may update facts. It must not silently authorize a new eval, repair, implementation, or scope expansion. Root-goal mutation requires explicit user authorization.
+
+For a recognized reusable failure, persist:
+
+```text
+pattern
+changed_rule
+source_did
+materiality
+optional deterministic tool matchers
+```
+
+When the same/materially similar pattern recurs, use bounded escalation:
+
+```text
+NOTICE -> WARNING -> STRIKE -> FREEZE -> ESCALATE
+```
+
+- `NOTICE`: recall the prior correction before proceeding.
+- `WARNING`: require an explicit permission check for a deterministically matched action.
+- `STRIKE`: block the matching action pending correction/reconciliation.
+- `FREEZE`: block mutating actions while read-only diagnosis and guard maintenance remain available.
+- `ESCALATE`: keep the freeze and require explicit owner-level reconciliation.
+
+Do not escalate on vague similarity. Semantic-only rules stay contextual unless the Primary or STP explicitly records a recurrence.
+
+The runtime state lives under `.claude/chomview/`, not inside the skill source, and is re-injected at session start and on each new user prompt. ChomView v0.3 intentionally installs no `Stop` hook.
+
+See `references/behavioral-integrity.md` and `references/bounded-enforcement.md`.
 
 ## When to invoke
 
@@ -340,7 +378,13 @@ OK / LOOK_AGAIN / WARNING
 Primary ADOPT / ADAPT / DECLINE
         |
         v
-optional changed_rule for recognized failure
+persist changed_rule when material
+        |
+        v
+Behavioral Continuity Guard
+        |
+        v
+NOTICE / WARNING / STRIKE / FREEZE / ESCALATE only on recurrence
         |
         v
 continue global task
@@ -361,6 +405,7 @@ ChomView is:
 Load only when needed:
 
 - `references/behavioral-integrity.md`
+- `references/bounded-enforcement.md`
 - `references/brotli-protocol.md`
 - `references/consequence-chain-completion.md`
 - `references/activation-cues.md`
