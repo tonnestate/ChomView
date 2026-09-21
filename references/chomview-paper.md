@@ -233,8 +233,11 @@ ChomView should be narrowed or rejected if:
 
 ### v0.3
 
-- evaluate activation heuristics;
-- only then consider learned routing.
+- persist material `changed_rule` corrections outside conversational memory;
+- re-inject active correction state across sessions and new user input;
+- add bounded recurrence enforcement: NOTICE -> WARNING -> STRIKE -> FREEZE -> ESCALATE;
+- prevent silent goal mutation from treating new evidence as new authorization;
+- add treatment identity and duplicate-skill release gates.
 
 ### Later
 
@@ -245,6 +248,6 @@ ChomView should be narrowed or rejected if:
 
 ## 15. Claims Boundary
 
-The current defensible claim is only that ChomView defines a plausible and falsifiable integration pattern for bounded consequence-aware second thought in task-focused agents.
+The current defensible claim is that ChomView defines and implements a plausible, falsifiable integration pattern for bounded consequence-aware second thought and behavioral continuity in task-focused agents.
 
-It is not yet evidence that ChomView works.
+v0.3 implementation is not confirmatory evidence that the new enforcement layer improves outcomes. Historical evaluation evidence and implementation claims must remain separate.

@@ -56,6 +56,8 @@ failure -> pattern -> changed_rule -> later recall -> changed action
 
 If a materially similar failure recurs, treat the previous acknowledgement as non-corrective. Ask what rule failed to transfer.
 
+ChomView v0.3 persists material correction rules with the Behavioral Continuity Guard so this transfer does not depend on conversational memory. The guard restores active rules on session start and beside each new user prompt. See `bounded-enforcement.md`.
+
 ## Detection questions
 
 For a local decision, ask:
@@ -68,6 +70,8 @@ For a local decision, ask:
 6. Is the current explanation causal analysis or post-hoc legitimization?
 7. Has the same failure class recurred after acknowledgement?
 8. What concise rule should be different next time?
+9. Was that rule persisted, or did it exist only as prose in the prior turn?
+10. Did new evidence merely update facts, or did the Primary silently treat it as authorization to change the root objective?
 
 ## Appropriate interventions
 
@@ -85,4 +89,4 @@ Use `OK` when the Primary explains a mistake, keeps responsibility for the wrong
 
 ## Non-goals
 
-Behavioral Integrity is not punishment, moral judgment, or a claim about human psychology. It is an operational reliability pattern for agents. Do not anthropomorphize the Primary or infer motives. Judge observable task behavior, claims, evidence, and repeated decision patterns.
+Behavioral Integrity is not punishment, moral judgment, or a claim about human psychology. The v0.3 NOTICE/WARNING/STRIKE/FREEZE/ESCALATE names describe bounded runtime states, not moral blame. It is an operational reliability pattern for agents. Do not anthropomorphize the Primary or infer motives. Judge observable task behavior, claims, evidence, and repeated decision patterns.

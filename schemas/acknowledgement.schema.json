@@ -42,6 +42,18 @@
     "changed_rule": {
       "type": "string",
       "maxLength": 1200
+    },
+    "rule_id": {
+      "type": "string",
+      "maxLength": 200
+    },
+    "continuity_action": {
+      "enum": [
+        "NONE",
+        "REMEMBER",
+        "RECORD_RECURRENCE",
+        "RESOLVE_AFTER_EVIDENCE"
+      ]
     }
   }
 }

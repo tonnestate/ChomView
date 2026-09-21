@@ -227,3 +227,17 @@ changed_rule: decision rule the Primary will apply to materially similar cases
 ```
 
 These fields transfer only decision-relevant summaries. They must not contain private chain-of-thought.
+
+
+## v0.3 Behavioral Continuity acknowledgement
+
+BROTLI/1 remains backward-compatible. When a recognized failure produces a reusable correction, the Primary acknowledgement may also carry:
+
+```text
+rule_id: stable correction-rule identifier
+continuity_action: NONE | REMEMBER | RECORD_RECURRENCE | RESOLVE_AFTER_EVIDENCE
+```
+
+`REMEMBER` means persist the failure pattern and changed rule outside conversational memory. `RECORD_RECURRENCE` advances the bounded enforcement state only for a materially similar previously acknowledged pattern. `RESOLVE_AFTER_EVIDENCE` resets escalation only after correction/reconciliation evidence exists.
+
+The peer does not invent regex matchers for ambiguous semantic rules. Deterministic matchers are an explicit runtime configuration, not a substitute for semantic judgment.

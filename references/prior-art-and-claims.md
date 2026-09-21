@@ -48,7 +48,10 @@ The candidate contribution is the specific composition:
 9. advice is non-authoritative;
 10. the Primary acknowledges but retains agency;
 11. no automatic multi-round debate follows;
-12. value is judged against additional compute, review baselines, rework, and token cost.
+12. value is judged against additional compute, review baselines, rework, and token cost;
+13. material self-corrections can be persisted as reusable behavioral rules outside conversational memory;
+14. repeated acknowledged failures can enter a bounded deterministic escalation state when explicit matchers exist;
+15. new evidence is separated from authorization to mutate the root objective.
 
 This should be described as a **candidate integration-level research gap**, not proven foundational novelty.
 
@@ -59,3 +62,9 @@ If bounded self-reconsideration or a standard independent review prompt performs
 ## Strongest positive result
 
 The strongest practical result would be evidence that two similarly limited low-cost model instances with separated immediate responsibilities produce fewer consequential local errors at positive net cost than one task-focused instance alone.
+
+## v0.3 implementation boundary
+
+Claude Code lifecycle hooks, persistent state files, permission gating, and escalation state machines are established engineering mechanisms and are not claimed as novel. ChomView's research question concerns the composition and incremental value of the bounded pattern, not ownership of those primitives.
+
+The v0.3 Behavioral Continuity Guard is an implementation hypothesis. Its presence in the package must not be cited as performance validation.
