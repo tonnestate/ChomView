@@ -16,6 +16,12 @@ from typing import Any
 
 SCHEMA = "CLAIM-EVIDENCE/1"
 _KINDS = {
+    "IMPLEMENTATION": re.compile(
+        r"(?i)(?:\\b(?:implementation|implementierung|reparatur|auftrag|work|changes|"
+        r"änderungen|fix|patch|code)\\b.{0,45}\\b(?:complete|completed|done|"
+        r"finished|fertig|abgeschlossen|erledigt|umgesetzt|implemented|fixed|behoben)\\b"
+        r"|\\b(?:alles erledigt|vollständig umgesetzt|reparatur abgeschlossen)\\b)"
+    ),
     "TEST_RESULT": re.compile(
         r"(?i)(?:\b(?:tests?|prüfungen?)\b.{0,55}\b(?:pass(?:ed)?|green|grün|bestanden|erfolgreich)\b"
         r"|\b\d+\s+(?:tests?|prüfungen?)\s+(?:passed|bestanden)\b)"
