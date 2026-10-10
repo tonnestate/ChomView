@@ -7,6 +7,7 @@ it is not a general-purpose factuality or truth classifier.
 """
 from __future__ import annotations
 
+import datetime as dt
 import hashlib
 import hmac
 import json
@@ -40,6 +41,7 @@ _QUALIFIER = re.compile(
 _MAX_MESSAGE = 32_768
 _MAX_REPORT = 32_768
 _MAX_REFS = 16
+_MAX_AGE_SECONDS = 900  # at most 15 minutes; never reuse stale host proof
 
 
 def _canonical(value: Any) -> bytes:
@@ -79,6 +81,15 @@ def _verified_report(report: Any, *, session_id: str, digest: str, key: str | No
         return False
     if report.get("message_sha256") != digest:
         return False
+    try:
+        issued = dt.datetime.fromisoformat(str(report["issued_at"]).replace("Z", "+00:00"))
+        if issued.tzinfo is None:
+            return False
+        age = (dt.datetime.now(dt.timezone.utc) - issued.astimezone(dt.timezone.utc)).total_seconds()
+        if not 0 <= age <= _MAX_AGE_SECONDS:
+            return False
+    except (KeyError, TypeError, ValueError, OverflowError):
+        return False
     claims = report.get("claims")
     if not isinstance(claims, list) or len(claims) > len(_KINDS) or not claims:
         return False
@@ -116,6 +127,7 @@ def sign_host_review(
         "schema": SCHEMA,
         "session_id": session_id,
         "message_sha256": message_digest(message),
+        "issued_at": dt.datetime.now(dt.timezone.utc).isoformat(),
         "claims": claims,
     }
     payload["signature"] = hmac.new(host_key.encode(), _canonical(payload), hashlib.sha256).hexdigest()
