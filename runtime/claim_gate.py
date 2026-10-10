@@ -69,7 +69,7 @@ def protected_claims(message: str) -> list[str]:
             # A nearby negation is conservative: false negative > false block.
             pre = message[max(0, match.start() - 45):match.start()]
             clause = re.split(r"[.;\n!?]", pre)[-1]
-            if _QUALIFIER.search(clause):
+            if _QUALIFIER.search(clause) or _QUALIFIER.search(match.group(0)):
                 continue
             found = True
             break
