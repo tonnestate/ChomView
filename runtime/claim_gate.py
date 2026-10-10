@@ -173,3 +173,40 @@ def review_final(
         ),
         "limitations": "Checks selected claim classes and authenticated review bindings, not arbitrary factual truth.",
     }
+
+
+def main(argv: list[str] | None = None) -> int:
+    """Host-pinned subprocess interface; does not offer any signing command."""
+    import argparse
+    import os
+    import sys
+    from pathlib import Path
+
+    parser = argparse.ArgumentParser(description="ChomView claim-evidence terminal review")
+    parser.add_argument("--session", required=True)
+    parser.add_argument("--mode", choices=("observe", "enforce"), default="observe")
+    parser.add_argument("--report-file", help="trusted-host produced and protected signed review JSON")
+    args = parser.parse_args(argv)
+
+    payload = json.loads(sys.stdin.read())
+    if not isinstance(payload, dict):
+        raise ValueError("expected a JSON hook payload")
+    message = payload.get("last_assistant_message")
+    if not isinstance(message, str):
+        raise ValueError("last_assistant_message missing")
+    report = None
+    if args.report_file:
+        report_path = Path(args.report_file)
+        # A trusted host must configure path and permissions outside the agent workspace.
+        if report_path.is_file() and report_path.stat().st_size <= _MAX_REPORT:
+            report = json.loads(report_path.read_text(encoding="utf-8"))
+    result = review_final(message, args.session, report=report,
+                          host_key=os.environ.get("CHOMVIEW_CLAIM_GATE_KEY"),
+                          mode=args.mode)
+    # No confidential source contents or raw message in output.
+    print(json.dumps(result, ensure_ascii=False, sort_keys=True))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
