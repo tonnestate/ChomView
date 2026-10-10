@@ -15,6 +15,18 @@
 
 ---
 
+## CLAIM-EVIDENCE/1 — staged web proposal
+
+The `web/chatgpt` proposal adds a deterministic, read-only claim-evidence
+review for selected high-impact claims such as passing tests, deployment,
+repository integration and independent verification. ChomView reviews a
+trusted host's HMAC-attested, session- and output-bound source references,
+rather than trusting the worker's own prose. The review defaults to
+`observe` and is **not yet deployed**. See
+[CLAIM-EVIDENCE/1](docs/CLAIM_EVIDENCE_PROTOCOL.md) for security limits,
+false-positive risks, tests and A/B/C evaluation. This does **not** turn
+ChomView into a general factuality oracle.
+
 ## Why ChomView exists
 
 Long-running AI agents have a structural problem: the same agent is expected to keep the **whole task** moving while also making dozens of small local decisions correctly.
