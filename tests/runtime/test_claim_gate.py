@@ -27,6 +27,23 @@ class ClaimGateTests(unittest.TestCase):
         self.assertEqual(claim_gate.protected_claims("I can help explain why tests fail."), [])
         self.assertEqual(claim_gate.protected_claims(""), [])
 
+    def test_completion_claim_is_protected_without_blocking_clear_uncertainty(self):
+        self.assertEqual(
+            claim_gate.protected_claims("Die Reparatur wurde vollständig umgesetzt."),
+            ["IMPLEMENTATION"],
+        )
+        self.assertEqual(
+            claim_gate.review_final(
+                "Die Reparatur wurde vollständig umgesetzt.",
+                "sid", mode="enforce",
+            )["decision"],
+            "block",
+        )
+        self.assertEqual(
+            claim_gate.protected_claims("Noch nicht vollständig umgesetzt."),
+            [],
+        )
+
     def test_no_evidence_is_review_only_by_default(self):
         v = claim_gate.review_final("93 tests passed.", "sid-1")
         self.assertEqual(v["decision"], "allow")
